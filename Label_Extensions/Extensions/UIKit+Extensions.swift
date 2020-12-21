@@ -43,7 +43,7 @@ extension UIView {
 
 extension UILabel {
 	
-	func with(text: String?) -> UILabel {
+	func with(text: String?) -> Self {
 		with {
 			$0.text = text
 		}

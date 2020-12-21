@@ -13,19 +13,19 @@ class ViewController: UIViewController {
 	lazy var body = UIStackView()
 		.vertical(spacing: 5)
 		.withViews(
-			UILabel()
+			Extended.UILabel()
 				.with(text: "Hello World!")
 				.withLargeTitleStyle
 				.inspect,
-			UILabel()
+			Extended.UILabel()
 				.with(text: "Hello World!")
 				.withHeadlineStyle
 				.inspect,
-			UILabel()
+			Extended.UILabel()
 				.with(text: "Hello World!")
 				.withBodyStyle
 				.inspect,
-			UILabel()
+			Extended.UILabel()
 				.with(text: "Hello World!")
 				.withFootnoteStyle
 				.inspect,
@@ -46,35 +46,38 @@ class ViewController: UIViewController {
 }
 
 
-extension UILabel {
+extension Extended.UILabel {
 	
-	var withLargeTitleStyle: UILabel {
+	var withLargeTitleStyle: Self {
 		with {
 			$0.textColor = .label
 			$0.font = .preferredFont(forTextStyle: .largeTitle)
+			$0.lineHeight = 100
 		}
 	}
 	
-	var withHeadlineStyle: UILabel {
+	var withHeadlineStyle: Self {
 		with {
 			$0.textColor = .label
 			$0.font = .preferredFont(forTextStyle: .headline)
-			$0.setContentCompressionResistancePriority(.required, for: .vertical)
+			$0.lineHeight = 100
 		}
 	}
 	
-	var withBodyStyle: UILabel {
+	var withBodyStyle: Self {
 		with {
 			$0.textColor = .systemGray
 			$0.font = .preferredFont(forTextStyle: .body)
+			$0.lineHeight = 50
 		}
 	}
 	
-	var withFootnoteStyle: UILabel {
+	var withFootnoteStyle: Self {
 		with {
 			$0.textColor = .systemGray
 			$0.numberOfLines = 0
 			$0.font = .preferredFont(forTextStyle: .footnote)
+			$0.lineHeight = 50
 		}
 	}
 }
