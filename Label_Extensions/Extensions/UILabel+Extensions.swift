@@ -10,41 +10,60 @@ import UIKit
 
 
 extension UILabel {
-		
+	
+	/// Make sure to call `UILabel.extend` somewhere.
+	static let extend: Void = { swizzle() }()
+	
+	// MARK: Public accessors
+	
 	var lineHeight: CGFloat? {
-		get {
-			if let lineHeightNumber = lineHeightNumber {
-				return CGFloat(lineHeightNumber.floatValue)
-			} else {
-				return nil
-			}
-		}
-		set {
-			if let newValue = newValue {
-				lineHeightNumber = NSNumber(value: Float(newValue))
-			} else {
-				lineHeightNumber = nil
-			}
-		}
+		get { lineHeightNumber.cgFloat }
+		set { lineHeightNumber = newValue?.nsNumber }
 	}
+		
+	// MARK: Objective-C accessors (to be swizzled)
 	
 	@objc var lineHeightNumber: NSNumber? {
 		get { nil }
 		set { print("UILabel.lineHeightNumber.set { \(String(describing: newValue)) }") }
 	}
 	
-	/// Make sure to call `UILabel.extend` somewhere.
-	static let extend: Void = {
-		swizzle()
-	}()
+	// MARK: Swizzle
 	
-	fileprivate static func swizzle() {	
-		if let originalGetter = class_getInstanceMethod(UILabel.self, #selector(getter: UILabel.lineHeightNumber)),
-		   let originalSetter = class_getInstanceMethod(UILabel.self, #selector(setter: UILabel.lineHeightNumber)),
-		   let swizzledGetter = class_getInstanceMethod(_UILabel.self, #selector(getter: _UILabel.lineHeightNumber)),
-		   let swizzledSetter = class_getInstanceMethod(_UILabel.self, #selector(setter: _UILabel.lineHeightNumber)) {
-			method_exchangeImplementations(originalGetter, swizzledGetter)
-			method_exchangeImplementations(originalSetter, swizzledSetter)
+	fileprivate static func swizzle() {
+		
+		// `lineHeightNumber`.
+		swap(#selector(getter: UILabel.lineHeightNumber), #selector(getter: _UILabel.lineHeightNumber))
+		swap(#selector(setter: UILabel.lineHeightNumber), #selector(setter: _UILabel.lineHeightNumber))
+	}
+	
+	fileprivate static func swap(_ originalSelector: Selector, _ swizzledSelector: Selector) {
+		if let originalMethod = class_getInstanceMethod(UILabel.self, originalSelector),
+		   let swizzledMethod = class_getInstanceMethod(_UILabel.self, swizzledSelector) {
+			method_exchangeImplementations(originalMethod, swizzledMethod)
+		}
+	}
+}
+
+
+fileprivate extension CGFloat {
+	
+	var nsNumber: NSNumber {
+		get {
+			NSNumber(value: Float(self))
+		}
+	}
+}
+
+fileprivate extension Optional where Wrapped: NSNumber {
+	
+	var cgFloat: CGFloat? {
+		get {
+			if let `self` = self {
+				return CGFloat(self.floatValue)
+			} else {
+				return nil
+			}
 		}
 	}
 }
@@ -55,13 +74,17 @@ fileprivate class _UILabel: UILabel {
 	// MARK: Properties
 	
 	@objc override public var lineHeightNumber: NSNumber? {
-		get { nil }
-		set { print("Swizzled._UILabel.lineHeightNumber.set { \(String(describing: newValue)) }") }
-//		didSet {
-//			if lineHeight != oldValue {
-//				layout()
-//			}
-//		}
+		get { _lineHeight?.nsNumber }
+		set { _lineHeight = newValue.cgFloat }
+	}
+	
+	private var _lineHeight: CGFloat? = nil {
+		didSet {
+			print("_UILabel._lineHeight.didSet { \(String(describing: _lineHeight)) }")
+			if _lineHeight != oldValue {
+				layout()
+			}
+		}
 	}
 	
 	
@@ -164,7 +187,7 @@ fileprivate class _UILabel: UILabel {
 		}
 		
 		// Set line height if any.
-		if let lineHeight = lineHeight {
+		if let lineHeight = _lineHeight {
 			
 			// Align text center vertically relative to the line height.
 			let baselineOffsetPoints = (lineHeight - font.lineHeight) / 2.0
