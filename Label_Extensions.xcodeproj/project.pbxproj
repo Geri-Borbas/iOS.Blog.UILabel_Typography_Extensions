@@ -16,7 +16,7 @@
 		55F236BB25912C430007BC69 /* Withable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236BA25912C430007BC69 /* Withable.swift */; };
 		55F236BF25912C710007BC69 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236BD25912C700007BC69 /* UIKit+Extensions.swift */; };
 		55F236CA25912E690007BC69 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236C925912E690007BC69 /* PreviewView.swift */; };
-		55F236CF259135680007BC69 /* Extended.UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236CE259135680007BC69 /* Extended.UILabel.swift */; };
+		55F236CF259135680007BC69 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236CE259135680007BC69 /* UILabel+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +31,7 @@
 		55F236BA25912C430007BC69 /* Withable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Withable.swift; sourceTree = "<group>"; };
 		55F236BD25912C700007BC69 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		55F236C925912E690007BC69 /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
-		55F236CE259135680007BC69 /* Extended.UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extended.UILabel.swift; sourceTree = "<group>"; };
+		55F236CE259135680007BC69 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +90,7 @@
 				55F236BA25912C430007BC69 /* Withable.swift */,
 				55F236BD25912C700007BC69 /* UIKit+Extensions.swift */,
 				55F236C925912E690007BC69 /* PreviewView.swift */,
-				55F236CE259135680007BC69 /* Extended.UILabel.swift */,
+				55F236CE259135680007BC69 /* UILabel+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -166,7 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */,
-				55F236CF259135680007BC69 /* Extended.UILabel.swift in Sources */,
+				55F236CF259135680007BC69 /* UILabel+Extensions.swift in Sources */,
 				55F236CA25912E690007BC69 /* PreviewView.swift in Sources */,
 				55F236BB25912C430007BC69 /* Withable.swift in Sources */,
 				55F236BF25912C710007BC69 /* UIKit+Extensions.swift in Sources */,

@@ -13,19 +13,19 @@ class ViewController: UIViewController {
 	lazy var body = UIStackView()
 		.vertical(spacing: 5)
 		.withViews(
-			Extended.UILabel()
+			UILabel()
 				.with(text: "Hello World!")
 				.withLargeTitleStyle
 				.inspect,
-			Extended.UILabel()
+			UILabel()
 				.with(text: "Hello World!")
 				.withHeadlineStyle
 				.inspect,
-			Extended.UILabel()
+			UILabel()
 				.with(text: "Hello World!")
 				.withBodyStyle
 				.inspect,
-			Extended.UILabel()
+			UILabel()
 				.with(text: "Hello World!")
 				.withFootnoteStyle
 				.inspect,
@@ -36,6 +36,7 @@ class ViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		UILabel.extend
 		view.addSubview(body)
 		view.backgroundColor = .systemBackground
 		body.pin(
@@ -46,7 +47,7 @@ class ViewController: UIViewController {
 }
 
 
-extension Extended.UILabel {
+extension UILabel {
 	
 	var withLargeTitleStyle: Self {
 		with {
