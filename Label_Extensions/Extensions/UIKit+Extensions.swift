@@ -18,15 +18,6 @@ extension UIView {
 		}
 	}
 	
-	var inspect: UIView {
-		with {
-			$0.layer.borderWidth = 1
-			$0.layer.cornerRadius = 2
-			$0.layer.borderColor = UIColor.red.withAlphaComponent(0.3).cgColor
-			$0.backgroundColor = UIColor.red.withAlphaComponent(0.1)
-		}
-	}
-	
 	func pin(to: UILayoutGuide, insets: UIEdgeInsets)  {
 		guard let _ = superview else {
 			return
@@ -37,6 +28,54 @@ extension UIView {
 		bottomAnchor.constraint(equalTo: to.bottomAnchor, constant: -insets.bottom).isActive = true
 		leftAnchor.constraint(equalTo: to.leftAnchor, constant: insets.left).isActive = true
 		rightAnchor.constraint(equalTo: to.rightAnchor, constant: -insets.right).isActive = true
+	}
+	
+	func pin(to: UIView, insets: UIEdgeInsets)  {
+		guard let _ = superview else {
+			return
+		}
+		
+		translatesAutoresizingMaskIntoConstraints = false
+		topAnchor.constraint(equalTo: to.topAnchor, constant: insets.top).isActive = true
+		bottomAnchor.constraint(equalTo: to.bottomAnchor, constant: -insets.bottom).isActive = true
+		leftAnchor.constraint(equalTo: to.leftAnchor, constant: insets.left).isActive = true
+		rightAnchor.constraint(equalTo: to.rightAnchor, constant: -insets.right).isActive = true
+	}
+	
+	var withRedLines: UIView {
+		with {
+			$0.layer.borderWidth = 1
+			$0.layer.cornerRadius = 2
+			$0.layer.borderColor = UIColor.red.withAlphaComponent(0.3).cgColor
+			$0.backgroundColor = UIColor.red.withAlphaComponent(0.1)
+		}
+	}
+	
+	var inspect: UIView {
+		withRedLines
+	}
+}
+
+
+extension UIStackView {
+	
+	func horizontal(spacing: CGFloat = 0) -> Self {
+		with {
+			$0.axis = .horizontal
+			$0.spacing = spacing
+		}
+	}
+	
+	func vertical(spacing: CGFloat = 0) -> Self {
+		with {
+			$0.axis = .vertical
+			$0.spacing = spacing
+		}
+	}
+	
+	func views(_ views: UIView ...) -> Self {
+		views.forEach { self.addArrangedSubview($0) }
+		return self
 	}
 }
 
@@ -51,24 +90,11 @@ extension UILabel {
 }
 
 
-extension UIStackView {
+extension UIImageView {
 	
-	func horizontal(spacing: CGFloat = 0) -> UIStackView {
+	func with(image: UIImage?) -> Self {
 		with {
-			$0.axis = .horizontal
-			$0.spacing = spacing
+			$0.image = image
 		}
-	}
-	
-	func vertical(spacing: CGFloat = 0) -> UIStackView {
-		with {
-			$0.axis = .vertical
-			$0.spacing = spacing
-		}
-	}
-	
-	func withViews(_ views: UIView ...) -> UIStackView {
-		views.forEach { self.addArrangedSubview($0) }
-		return self
 	}
 }

@@ -8,165 +8,79 @@
 import UIKit
 
 
-
-extension UILabel {
+fileprivate protocol Extensions {
 	
-	/// Make sure to call `UILabel.extend` somewhere.
-	static let extend: Void = { swizzle() }()
+	var lineHeight: CGFloat? { get set }
+	var letterSpacing: CGFloat? { get set }
+	var underline: NSUnderlineStyle? { get set }
+	var strikethrough: NSUnderlineStyle? { get set }
 	
-	// MARK: Public accessors
-	
-	var lineHeight: CGFloat? {
-		get { lineHeightNumber.cgFloat }
-		set { lineHeightNumber = newValue?.nsNumber }
-	}
-		
-	// MARK: Objective-C accessors (to be swizzled)
-	
-	@objc var lineHeightNumber: NSNumber? {
-		get { nil }
-		set { print("UILabel.lineHeightNumber.set { \(String(describing: newValue)) }") }
-	}
-	
-	// MARK: Swizzle
-	
-	fileprivate static func swizzle() {
-		
-		// `lineHeightNumber`.
-		swap(#selector(getter: UILabel.lineHeightNumber), #selector(getter: _UILabel.lineHeightNumber))
-		swap(#selector(setter: UILabel.lineHeightNumber), #selector(setter: _UILabel.lineHeightNumber))
-	}
-	
-	fileprivate static func swap(_ originalSelector: Selector, _ swizzledSelector: Selector) {
-		if let originalMethod = class_getInstanceMethod(UILabel.self, originalSelector),
-		   let swizzledMethod = class_getInstanceMethod(_UILabel.self, swizzledSelector) {
-			method_exchangeImplementations(originalMethod, swizzledMethod)
-		}
-	}
+	/// Call `UILabel.swizzleIfNeeded()` before creating your first label.
+	static func swizzleIfNeeded()
 }
 
 
-fileprivate extension CGFloat {
+extension UILabel: Extensions {
 	
-	var nsNumber: NSNumber {
+	fileprivate struct Keys {
+		
+		static var lineHeight: UInt8 = 0
+		static var letterSpacing: UInt8 = 1
+		static var underline_: UInt8 = 2
+		static var strikethrough: UInt8 = 3
+		static var isSwizzled: UInt8 = 4
+	}
+	
+	public var lineHeight: CGFloat? {
 		get {
-			NSNumber(value: Float(self))
+			objc_getAssociatedObject(self, &Keys.lineHeight) as? CGFloat
+		}
+		set {
+			if lineHeight != newValue {
+				objc_setAssociatedObject(self, &Keys.lineHeight, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+				layout(text: text)
+			}
 		}
 	}
-}
-
-fileprivate extension Optional where Wrapped: NSNumber {
 	
-	var cgFloat: CGFloat? {
+	public var letterSpacing: CGFloat? {
 		get {
-			if let `self` = self {
-				return CGFloat(self.floatValue)
-			} else {
-				return nil
-			}
+			objc_getAssociatedObject(self, &Keys.letterSpacing) as? CGFloat
 		}
-	}
-}
-
-	
-fileprivate class _UILabel: UILabel {
-		
-	// MARK: Properties
-	
-	@objc override public var lineHeightNumber: NSNumber? {
-		get { _lineHeight?.nsNumber }
-		set { _lineHeight = newValue.cgFloat }
-	}
-	
-	private var _lineHeight: CGFloat? = nil {
-		didSet {
-			print("_UILabel._lineHeight.didSet { \(String(describing: _lineHeight)) }")
-			if _lineHeight != oldValue {
-				layout()
+		set {
+			if letterSpacing != newValue {
+				objc_setAssociatedObject(self, &Keys.letterSpacing, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+				layout(text: text)
 			}
 		}
 	}
 	
-	
-	// MARK: Overrides
-	
-	override var text: String? {
-		didSet {
-			if text != oldValue {
-				layout()
+	public var underline: NSUnderlineStyle? {
+		get {
+			objc_getAssociatedObject(self, &Keys.underline_) as? NSUnderlineStyle
+		}
+		set {
+			if underline != newValue {
+				objc_setAssociatedObject(self, &Keys.underline_, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+				layout(text: text)
 			}
 		}
 	}
 	
-	override var font: UIFont! {
-		didSet {
-			if font != oldValue {
-				layout()
+	public var strikethrough: NSUnderlineStyle? {
+		get {
+			objc_getAssociatedObject(self, &Keys.strikethrough) as? NSUnderlineStyle
+		}
+		set {
+			print("strikethrough.set{ \(String(describing: newValue)) }")
+			if strikethrough != newValue {
+				objc_setAssociatedObject(self, &Keys.strikethrough, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+				layout(text: text)
 			}
 		}
 	}
 	
-	override var textColor: UIColor! {
-		didSet {
-			if textColor != oldValue {
-				layout()
-			}
-		}
-	}
-	
-	// open var text: String? // default is nil
-	// open var font: UIFont! // default is nil (system font 17 plain)
-	// open var textColor: UIColor! // default is labelColor
-	
-	// open var shadowColor: UIColor? // default is nil (no shadow)
-	// open var shadowOffset: CGSize // default is CGSizeMake(0, -1) -- a top shadow
-	
-	// open var textAlignment: NSTextAlignment // default is NSTextAlignmentNatural (before iOS 9, the default was NSTextAlignmentLeft)
-	// open var lineBreakMode: NSLineBreakMode // default is NSLineBreakByTruncatingTail. used for single and multiple lines of text
-
-	// the underlying attributed string drawn by the label, if set, the label ignores the properties above.
-	// @NSCopying open var attributedText: NSAttributedString? // default is nil
-
-	// the 'highlight' property is used by subclasses for such things as pressed states. it's useful to make it part of the base class as a user property
-	// open var highlightedTextColor: UIColor? // default is nil
-	// open var isHighlighted: Bool // default is NO
-
-	// open var isUserInteractionEnabled: Bool // default is NO
-	// open var isEnabled: Bool // default is YES. changes how the label is drawn
-
-	// this determines the number of lines to draw and what to do when sizeToFit is called. default value is 1 (single line). A value of 0 means no limit
-	// if the height of the text reaches the # of lines or the height of the view is less than the # of lines allowed, the text will be
-	// truncated using the line break mode.
-	// open var numberOfLines: Int
-
-	// these next 3 properties allow the label to be autosized to fit a certain width by scaling the font size(s) by a scaling factor >= the minimum scaling factor
-	// and to specify how the text baseline moves when it needs to shrink the font.
-	// open var adjustsFontSizeToFitWidth: Bool // default is NO
-	// open var baselineAdjustment: UIBaselineAdjustment // default is UIBaselineAdjustmentAlignBaselines
-	// open var minimumScaleFactor: CGFloat // default is 0.0
-
-	// Tightens inter-character spacing in attempt to fit lines wider than the available space if the line break mode is one of the truncation modes before starting to truncate.
-	// The maximum amount of tightening performed is determined by the system based on contexts such as font, line width, etc.
-	// open var allowsDefaultTighteningForTruncation: Bool // default is NO
-
-	// Specifies the line break strategies that may be used for laying out the text in this label.
-	// If this property is not set, the default value is NSLineBreakStrategyStandard.
-	// If the label contains an attributed text with paragraph style(s) that specify a set of line break strategies, the set of strategies in the paragraph style(s) will be used instead of the set of strategies defined by this property.
-	// open var lineBreakStrategy: NSParagraphStyle.LineBreakStrategy
-
-	// override points. can adjust rect before calling super.
-	// label has default content mode of UIViewContentModeRedraw
-	// open func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect
-	// open func drawText(in rect: CGRect)
-
-	// Support for constraint-based layout (auto layout)
-	// If nonzero, this is used when determining -intrinsicContentSize for multiline labels
-	// open var preferredMaxLayoutWidth: CGFloat
-	
-	
-	// MARK: Layout
-	
-	private func layout() {
+	fileprivate func layout(text: String?) {
 		
 		// Only if any.
 		guard let text = text else {
@@ -176,32 +90,59 @@ fileprivate class _UILabel: UILabel {
 		// Collect attributes.
 		var attributes: [NSAttributedString.Key : Any] = [:]
 		
-		// Inherit font.
+		// Inherit `UILabel.font`.
 		if let font = font {
 			attributes[.font] = font
 		}
 		
-		// Inherit color.
+		// Inherit `UILabel.color`.
 		if let textColor = textColor {
 			attributes[.foregroundColor] = textColor
 		}
 		
-		// Set line height if any.
-		if let lineHeight = _lineHeight {
+		// Inherit `UILabel.shadowColor`.
+		if let shadowColor = shadowColor {
+			let shadow = NSShadow()
+			shadow.shadowColor = shadowColor
+			shadow.shadowOffset = shadowOffset
+			attributes[.shadow] = shadow
+		}
+		
+		// Underline (if any).
+		if let underline = underline {
+			attributes[.underlineStyle] = underline.rawValue
+		}
+
+		// Strikethrough (if any).
+		if let strikethrough = strikethrough {
+			attributes[.strikethroughStyle] = strikethrough.rawValue
+		}
+		
+		let paragraphStyle = NSMutableParagraphStyle()
+		
+		// Inherit `UILabel.alignment` and `UILabel.lineBreakMode`.
+		paragraphStyle.alignment = textAlignment
+		paragraphStyle.lineBreakMode = lineBreakMode
+		
+		// Set line height (if any).
+		if let lineHeight = lineHeight {
 			
 			// Align text center vertically relative to the line height.
 			let baselineOffsetPoints = (lineHeight - font.lineHeight) / 2.0
 			attributes[.baselineOffset] = baselineOffsetPoints / 2.0 // For some reason (?) it needs to be halved
+			self.baselineAdjustment = .alignCenters
 			
 			// Paragraph.
-			attributes[.paragraphStyle] = NSMutableParagraphStyle().with {
-				$0.minimumLineHeight = lineHeight
-				$0.maximumLineHeight = lineHeight
-				
-				// Inherit alignment and line break mode.
-				$0.alignment = textAlignment
-				$0.lineBreakMode = lineBreakMode
-			}
+			paragraphStyle.minimumLineHeight = lineHeight
+			paragraphStyle.maximumLineHeight = lineHeight
+		}
+		
+		// Set paragraph style.
+		attributes[.paragraphStyle] = paragraphStyle
+		
+		// Kerning (if any).
+		if let letterSpacing = letterSpacing {
+			attributes[.kern] = letterSpacing
 		}
 		
 		// Set attributed text.
@@ -209,5 +150,53 @@ fileprivate class _UILabel: UILabel {
 			string: text,
 			attributes: attributes
 		)
+	}
+}
+
+
+extension UILabel {
+	
+	static var isSwizzled: Bool {
+		get {
+			objc_getAssociatedObject(UILabel.self, &Keys.isSwizzled) as? Bool ?? false
+		}
+		set {
+			objc_setAssociatedObject(UILabel.self, &Keys.isSwizzled, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		}
+	}
+	
+	static func swizzleIfNeeded() {
+		print("\(Self.self).\(#function)")
+		if !isSwizzled {
+			swizzle()
+			isSwizzled = true
+		}
+	}
+	
+	static func swizzle() {
+		print("\(Self.self).\(#function)")
+		swap(#selector(getter: Extension.text), of: Extension.self, to: #selector(getter: UILabel.text), of: UILabel.self)
+		swap(#selector(setter: Extension.text), of: Extension.self, to: #selector(setter: UILabel.text), of: UILabel.self)
+	}
+	
+	static func swap(_ originalSelector: Selector, of originalClass: AnyClass, to swizzledSelector: Selector, of swizzledClass: AnyClass) {
+		if let originalMethod = class_getInstanceMethod(originalClass, originalSelector),
+		   let swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector) {
+			method_exchangeImplementations(originalMethod, swizzledMethod)
+		}
+	}
+}
+
+
+fileprivate class Extension: UILabel {
+	
+	@objc override var text: String? {
+		get {
+			attributedText?.string
+		}
+		set {
+			print("UILabel.text.set, newValue: \(String(describing: newValue))")
+			layout(text: newValue)
+		}
 	}
 }
