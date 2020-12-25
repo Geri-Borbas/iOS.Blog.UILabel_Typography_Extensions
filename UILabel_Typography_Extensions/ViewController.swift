@@ -29,7 +29,7 @@ class ViewController: UIViewController {
 				.withHeadlineStyle
 				.with {
 					$0.textColor = .red
-					$0.strikethrough = .single
+					$0.strikethrough = .patternDash
 					$0.text = "Hello Mars!"
 					$0.textColor = .orange
 				 }
