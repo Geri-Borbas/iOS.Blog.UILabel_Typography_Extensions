@@ -118,7 +118,6 @@ class ViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		UILabel.swizzleIfNeeded()
 		view.addSubview(body)
 		view.backgroundColor = .systemBackground
 		body.pin(

@@ -14,9 +14,6 @@ fileprivate protocol Extensions {
 	var letterSpacing: CGFloat? { get set }
 	var underline: NSUnderlineStyle? { get set }
 	var strikethrough: NSUnderlineStyle? { get set }
-	
-	/// Call `UILabel.swizzleIfNeeded()` before creating your first label.
-	static func swizzleIfNeeded()
 }
 
 
@@ -28,7 +25,7 @@ extension UILabel: Extensions {
 		static var letterSpacing: UInt8 = 1
 		static var underline_: UInt8 = 2
 		static var strikethrough: UInt8 = 3
-		static var isSwizzled: UInt8 = 4
+		static var observer: UInt8 = 4
 	}
 	
 	public var lineHeight: CGFloat? {
@@ -72,7 +69,6 @@ extension UILabel: Extensions {
 			objc_getAssociatedObject(self, &Keys.strikethrough) as? NSUnderlineStyle
 		}
 		set {
-			print("strikethrough.set{ \(String(describing: newValue)) }")
 			if strikethrough != newValue {
 				objc_setAssociatedObject(self, &Keys.strikethrough, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 				layout(text: text)
@@ -86,6 +82,9 @@ extension UILabel: Extensions {
 		guard let text = text else {
 			return attributedText = nil
 		}
+		
+		// Observe.
+		observeIfNeeded()
 		
 		// Collect attributes.
 		var attributes: [NSAttributedString.Key : Any] = [:]
@@ -144,59 +143,77 @@ extension UILabel: Extensions {
 		if let letterSpacing = letterSpacing {
 			attributes[.kern] = letterSpacing
 		}
-		
-		// Set attributed text.
-		attributedText = NSAttributedString(
+			
+		// Create attributed string.
+		let attributedString = NSMutableAttributedString(
 			string: text,
 			attributes: attributes
 		)
+		
+		// Append image attachment (if any).
+		//  This will be awesome
+//		let attachment = NSTextAttachment()
+//		let image = UIImage(systemName: "map")!.withRenderingMode(.alwaysTemplate)
+//		attachment.image = image
+//		attributedString.append(NSAttributedString(attachment: attachment))
+		
+		// Set attributed text.
+		attributedText = attributedString
 	}
 }
 
 
 extension UILabel {
 	
-	static var isSwizzled: Bool {
+	fileprivate var observer: Observer? {
 		get {
-			objc_getAssociatedObject(UILabel.self, &Keys.isSwizzled) as? Bool ?? false
+			objc_getAssociatedObject(self, &Keys.observer) as? Observer
 		}
 		set {
-			objc_setAssociatedObject(UILabel.self, &Keys.isSwizzled, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+			objc_setAssociatedObject(self, &Keys.observer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 		}
 	}
-	
-	static func swizzleIfNeeded() {
-		print("\(Self.self).\(#function)")
-		if !isSwizzled {
-			swizzle()
-			isSwizzled = true
+
+	func observeIfNeeded() {
+		guard observer == nil else {
+			return
 		}
-	}
-	
-	static func swizzle() {
-		print("\(Self.self).\(#function)")
-		swap(#selector(getter: Extension.text), of: Extension.self, to: #selector(getter: UILabel.text), of: UILabel.self)
-		swap(#selector(setter: Extension.text), of: Extension.self, to: #selector(setter: UILabel.text), of: UILabel.self)
-	}
-	
-	static func swap(_ originalSelector: Selector, of originalClass: AnyClass, to swizzledSelector: Selector, of swizzledClass: AnyClass) {
-		if let originalMethod = class_getInstanceMethod(originalClass, originalSelector),
-		   let swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector) {
-			method_exchangeImplementations(originalMethod, swizzledMethod)
-		}
+		
+		observer = Observer(
+			for: self,
+			onTextChange: { [weak self] text in
+				print("onTextChange { \(String(describing: text)) }")
+				self?.layout(text: text)
+			}
+		)
 	}
 }
 
 
-fileprivate class Extension: UILabel {
+fileprivate class Observer: NSObject {
 	
-	@objc override var text: String? {
-		get {
-			attributedText?.string
-		}
-		set {
-			print("UILabel.text.set, newValue: \(String(describing: newValue))")
-			layout(text: newValue)
-		}
+	typealias TextChangeAction = (_ text: String?) -> Void
+	let onTextChange: TextChangeAction
+	private var observer: NSKeyValueObservation?
+	
+	init(for label: UILabel, onTextChange: @escaping TextChangeAction) {
+		self.onTextChange = onTextChange
+		super.init()
+		observe(label)
+	}
+	
+	func observe(_ label: UILabel) {
+		observer = label.observe(
+			\.text,
+			options:  [.new, .old],
+			changeHandler: { [weak self] _, change in
+				self?.onTextChange(change.newValue ?? nil)
+			}
+		)
+	}
+	
+	deinit {
+		print("\(Self.self).\(#function)")
+		observer?.invalidate()
 	}
 }
