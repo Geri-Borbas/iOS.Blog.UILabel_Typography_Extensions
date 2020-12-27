@@ -15,6 +15,13 @@ class ViewController: UIViewController {
 		.views(
 			UILabel().with {
 				$0.text = "Hello World!"
+				$0.textColor = .gray
+				$0.font = .preferredFont(forTextStyle: .largeTitle)
+				// $0.underline = .double
+				$0.letterSpacing = -2
+			}.inspect,
+			UILabel().with {
+				$0.text = "Hello World!"
 				$0.textColor = .label
 				$0.font = .preferredFont(forTextStyle: .largeTitle)
 				$0.underline = .double

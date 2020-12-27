@@ -148,8 +148,7 @@ extension UILabel: Extensions {
 			
 			// Align text center vertically relative to the line height.
 			let baselineOffsetPoints = (lineHeight - font.lineHeight) / 2.0
-			attributes[.baselineOffset] = baselineOffsetPoints / 2.0 // For some reason (?) it needs to be halved
-			self.baselineAdjustment = .alignCenters
+			attributes[.baselineOffset] = baselineOffsetPoints //  / 2.0 // For some reason (?) it needs to be halved
 			
 			// Paragraph.
 			paragraphStyle.minimumLineHeight = lineHeight
@@ -170,11 +169,33 @@ extension UILabel: Extensions {
 			attributes: attributes
 		)
 		
-		// This will be awesome (once I figure out vertical alignment issues) 🖼️
-//		let attachment = NSTextAttachment()
-//		let image = UIImage(systemName: "map")!.withRenderingMode(.alwaysTemplate)
-//		attachment.image = image
-//		attributedString.append(NSAttributedString(attachment: attachment))
+		// Create attributed string with image attachment (and inherit all the attributes above).
+		if let image = UIImage(named: "Star") {
+			
+			// Collect attributes.
+			var attachmentAttributes: [NSAttributedString.Key : Any] = [:]
+			
+			// Image height.
+			let imageHeight = image.size.height
+			
+			// Attachment.
+			let attachment = NSTextAttachment()
+			attachment.image = image.withRenderingMode(.alwaysTemplate)
+			attachment.bounds = CGRect(x: 0, y: 0, width: imageHeight, height: imageHeight)
+			let attachmentAttributedString = NSMutableAttributedString(attachment: attachment)
+			
+			// Inherit string attributes.
+			attachmentAttributes[.foregroundColor] = attributes[.foregroundColor]
+			attachmentAttributes[.baselineOffset] = attributes[.baselineOffset]
+			attachmentAttributedString.addAttributes(
+				attachmentAttributes,
+				range: .init(location: 0, length: attachmentAttributedString.length)
+			)
+			
+			// Append to string.
+			
+			attributedString.append(attachmentAttributedString)
+		}
 		
 		// Set attributed text.
 		attributedText = attributedString
