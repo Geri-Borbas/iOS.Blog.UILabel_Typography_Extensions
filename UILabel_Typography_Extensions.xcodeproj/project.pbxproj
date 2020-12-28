@@ -17,6 +17,7 @@
 		55F236BF25912C710007BC69 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236BD25912C700007BC69 /* UIKit+Extensions.swift */; };
 		55F236CA25912E690007BC69 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236C925912E690007BC69 /* PreviewView.swift */; };
 		55F236CF259135680007BC69 /* UILabel+Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236CE259135680007BC69 /* UILabel+Typography.swift */; };
+		55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7F0A1259A6F03001BEF90 /* Typography.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		55F236BD25912C700007BC69 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		55F236C925912E690007BC69 /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		55F236CE259135680007BC69 /* UILabel+Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Typography.swift"; sourceTree = "<group>"; };
+		55F7F0A1259A6F03001BEF90 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +50,7 @@
 		554AF31C25961F2400A23E41 /* Typography */ = {
 			isa = PBXGroup;
 			children = (
+				55F7F0A1259A6F03001BEF90 /* Typography.swift */,
 				55F236CE259135680007BC69 /* UILabel+Typography.swift */,
 			);
 			path = Typography;
@@ -167,6 +170,7 @@
 			files = (
 				55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */,
 				55F236CF259135680007BC69 /* UILabel+Typography.swift in Sources */,
+				55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */,
 				55F236CA25912E690007BC69 /* PreviewView.swift in Sources */,
 				55F236BB25912C430007BC69 /* Withable.swift in Sources */,
 				55F236BF25912C710007BC69 /* UIKit+Extensions.swift in Sources */,
@@ -314,6 +318,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = NG36MJV4JP;
 				ENABLE_PREVIEWS = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = UILabel_Typography_Extensions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -321,6 +326,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.eppz.Label-Extensions";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -335,6 +341,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = NG36MJV4JP;
 				ENABLE_PREVIEWS = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				INFOPLIST_FILE = UILabel_Typography_Extensions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -342,6 +349,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.eppz.Label-Extensions";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

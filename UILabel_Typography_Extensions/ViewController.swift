@@ -13,56 +13,83 @@ class ViewController: UIViewController {
 	lazy var body = UIStackView()
 		.vertical(spacing: 5)
 		.views(
-			UILabel().with {
-				$0.text = "Hello World!"
-				$0.textColor = .gray
-				$0.font = .preferredFont(forTextStyle: .largeTitle)
-				// $0.underline = .double
-				$0.letterSpacing = -2
-			}.inspect,
-			UILabel().with {
-				$0.text = "Hello World!"
-				$0.textColor = .label
-				$0.font = .preferredFont(forTextStyle: .largeTitle)
-				$0.underline = .double
-				$0.lineHeight = 100
-				$0.letterSpacing = -2
-			}.with {
-				$0.text = "Hello Saturn!"
-				$0.tag = 3
-			}.inspect,
+			
 			UILabel()
-				.with(text: "Hello World!")
-				.withHeadlineStyle
+				.with(text: "Default")
 				.with {
-					$0.textColor = .red
-					$0.strikethrough = .patternDash
-					$0.text = "Hello Mars!"
+					$0.textColor = .gray
+					$0.font = .preferredFont(forTextStyle: .largeTitle)
+				}.inspect,
+			
+			UILabel()
+				.with(text: "Default")
+				.with {
+					$0.textColor = .label
+					$0.font = .preferredFont(forTextStyle: .headline)
+					$0.underline = .double
+					$0.lineHeight = 100
+					$0.letterSpacing = -1
+				}.with {
+					$0.text = "Underline / Line Height / Letter Spacing"
+					$0.tag = 3
+				}.inspect,
+			
+			UILabel()
+				.with(text: "Default")
+				.with {
+					$0.textColor = .label
+					$0.font = .preferredFont(forTextStyle: .headline)
+					$0.lineHeight = 100
+				}
+				.with {
+					$0.text = "Line Height / Recolored / Strikethrough"
 					$0.textColor = .orange
+					$0.strikethrough = .single
+					$0.lineBreakMode = .byTruncatingHead
 				 }
 				.inspect,
+			
 			UILabel()
 				.with(text: "Hello World!")
-				.withBodyStyle
 				.with {
+					$0.textColor = .systemGray
+					$0.font = .preferredFont(forTextStyle: .body)
+					$0.lineHeight = 50
+				}
+				.with {
+					$0.text = "Line Height / Recolored"
 					$0.textColor = .green
 				 }
 				.inspect,
+			
 			UILabel()
-				.with(text: "Hello World!")
-				.withFootnoteStyle
+				.with(text: "Letter Spacing / Alignment / Line Break Mode")
+				.with {
+					$0.textColor = .systemGray
+					$0.font = .preferredFont(forTextStyle: .footnote)
+					$0.numberOfLines = 0
+				}
 				.with {
 					$0.letterSpacing = 20
 					$0.textAlignment = .right
 					$0.lineBreakMode = .byTruncatingHead
 				 }
 				.inspect,
+			
 			UIButton()
 				.with {
-					$0.setTitle("Press me", for: .normal)
-					$0.setTitleColor(.label, for: .normal)
+					$0.titleLabel?.text = "Button (Letter Spacing / Line Height / Underline)"
+					$0.titleLabel?.textColor = .label
+					$0.titleLabel?.letterSpacing = 5
+					$0.titleLabel?.lineHeight = 50
+					$0.titleLabel?.underline = .thick
+					$0.titleLabel?.lineBreakMode = .byTruncatingMiddle
+					$0.titleLabel?.pin(to: $0, insets: UIEdgeInsets.zero)
+					$0.setAttributedTitle($0.titleLabel?.attributedText, for: .normal)
 					$0.addTarget(self, action: #selector(didTap), for: .touchUpInside)
-				},
+				}
+				.inspect,
+			
 			UIView
 				.spacer
 				.inspect

@@ -1,6 +1,6 @@
 //
 //  UILabel+Typography.swift
-//  Label_Extensions
+//  UILabel_Typography_Extensions
 //
 //  Copyright © 2020. Geri Borbás. All rights reserved.
 //  https://twitter.com/Geri_Borbas
@@ -28,72 +28,74 @@
 import UIKit
 
 
-fileprivate protocol Extensions {
-	
-	var lineHeight: CGFloat? { get set }
-	var letterSpacing: CGFloat? { get set }
-	var underline: NSUnderlineStyle? { get set }
-	var strikethrough: NSUnderlineStyle? { get set }
-}
-
-
-extension UILabel: Extensions {
-	
-	fileprivate struct Keys {
-		
-		static var lineHeight: UInt8 = 0
-		static var letterSpacing: UInt8 = 1
-		static var underline_: UInt8 = 2
-		static var strikethrough: UInt8 = 3
-		static var observer: UInt8 = 4
-	}
+extension UILabel: TypographyExtensions {
 	
 	public var lineHeight: CGFloat? {
-		get {
-			objc_getAssociatedObject(self, &Keys.lineHeight) as? CGFloat
-		}
-		set {
-			if lineHeight != newValue {
-				objc_setAssociatedObject(self, &Keys.lineHeight, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-				layout(text: text)
-			}
-		}
+		get { typography?.lineHeight }
+		set { typography?.set(newValue, for: \.lineHeight, onChange: { layout(text: text) }) }
 	}
 	
 	public var letterSpacing: CGFloat? {
-		get {
-			objc_getAssociatedObject(self, &Keys.letterSpacing) as? CGFloat
-		}
-		set {
-			if letterSpacing != newValue {
-				objc_setAssociatedObject(self, &Keys.letterSpacing, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-				layout(text: text)
-			}
-		}
+		get { typography?.letterSpacing }
+		set { typography?.set(newValue, for: \.letterSpacing, onChange: { layout(text: text) }) }
 	}
 	
 	public var underline: NSUnderlineStyle? {
-		get {
-			objc_getAssociatedObject(self, &Keys.underline_) as? NSUnderlineStyle
-		}
-		set {
-			if underline != newValue {
-				objc_setAssociatedObject(self, &Keys.underline_, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-				layout(text: text)
-			}
-		}
+		get { typography?.underline }
+		set { typography?.set(newValue, for: \.underline, onChange: { layout(text: text) }) }
 	}
 	
 	public var strikethrough: NSUnderlineStyle? {
+		get { typography?.strikethrough }
+		set { typography?.set(newValue, for: \.strikethrough, onChange: { layout(text: text) }) }
+	}
+	
+	public var leadingImage: Typography.Image? {
+		get { typography?.leadingImage }
+		set { typography?.set(newValue, for: \.leadingImage, onChange: { layout(text: text) }) }
+	}
+	
+	public var trailingImage: Typography.Image? {
+		get { typography?.trailingImage }
+		set { typography?.set(newValue, for: \.trailingImage, onChange: { layout(text: text) }) }
+	}
+	
+	fileprivate struct Keys {
+		
+		static var typography: UInt8 = 0
+		static var observer: UInt8 = 4
+	}
+	
+	fileprivate var _typography: Typography? {
+		get { objc_getAssociatedObject(self, &Keys.typography) as? Typography }
+		set { objc_setAssociatedObject(self, &Keys.typography, Typography(), .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+	}
+	
+	fileprivate var typography: Typography? {
 		get {
-			objc_getAssociatedObject(self, &Keys.strikethrough) as? NSUnderlineStyle
-		}
-		set {
-			if strikethrough != newValue {
-				objc_setAssociatedObject(self, &Keys.strikethrough, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-				layout(text: text)
+			if _typography == nil {
+				_typography = Typography()
 			}
+			return _typography
 		}
+	}
+}
+
+
+extension UILabel {
+	
+	fileprivate var needsLayout: Bool {
+		lineHeight != nil ||
+		letterSpacing != nil ||
+		underline != nil ||
+		strikethrough != nil ||
+		leadingImage != nil ||
+		trailingImage != nil
+	}
+	
+	fileprivate var hasImage: Bool {
+		leadingImage != nil ||
+		trailingImage != nil
 	}
 	
 	fileprivate func layout(text: String?) {
@@ -102,6 +104,14 @@ extension UILabel: Extensions {
 		guard let text = text else {
 			return attributedText = nil
 		}
+		
+		// Only if needed.
+//		guard needsLayout else {
+//			return
+//		}
+		
+		print("\n")
+		print("layout(text: `\(text)`)")
 		
 		// Observe.
 		observeIfNeeded()
@@ -119,6 +129,11 @@ extension UILabel: Extensions {
 			attributes[.foregroundColor] = textColor
 		}
 		
+		// Inherit `UILabel.backgroundColor`.
+		if let backgroundColor = backgroundColor {
+			attributes[.backgroundColor] = backgroundColor
+		}
+		
 		// Inherit `UILabel.shadowColor`.
 		if let shadowColor = shadowColor {
 			let shadow = NSShadow()
@@ -129,11 +144,13 @@ extension UILabel: Extensions {
 		
 		// Underline (if any).
 		if let underline = underline {
+			print("underline: \(underline)))")
 			attributes[.underlineStyle] = underline.rawValue
 		}
 
 		// Strikethrough (if any).
 		if let strikethrough = strikethrough {
+			print("strikethrough: \(strikethrough)))")
 			attributes[.strikethroughStyle] = strikethrough.rawValue
 		}
 		
@@ -146,9 +163,12 @@ extension UILabel: Extensions {
 		// Set line height (if any).
 		if let lineHeight = lineHeight {
 			
+			print("lineHeight: \(lineHeight)))")
+			
 			// Align text center vertically relative to the line height.
 			let baselineOffsetPoints = (lineHeight - font.lineHeight) / 2.0
-			attributes[.baselineOffset] = baselineOffsetPoints //  / 2.0 // For some reason (?) it needs to be halved
+			let divider: CGFloat = hasImage ? 1.0 : 2.0 // For some reason (?) it needs to be halved (if no image attachment present)
+			attributes[.baselineOffset] = baselineOffsetPoints / divider
 			
 			// Paragraph.
 			paragraphStyle.minimumLineHeight = lineHeight
@@ -160,45 +180,70 @@ extension UILabel: Extensions {
 		
 		// Kerning (if any).
 		if let letterSpacing = letterSpacing {
+			print("letterSpacing: \(letterSpacing)))")
 			attributes[.kern] = letterSpacing
 		}
 			
 		// Create attributed string.
-		let attributedString = NSMutableAttributedString(
-			string: text,
-			attributes: attributes
-		)
+		let attributedString = NSMutableAttributedString()
 		
-		// Create attributed string with image attachment (and inherit all the attributes above).
-		if let image = UIImage(named: "Star") {
-			
-			// Collect attributes.
-			var attachmentAttributes: [NSAttributedString.Key : Any] = [:]
-			
-			// Image height.
-			let imageHeight = image.size.height
-			
-			// Attachment.
-			let attachment = NSTextAttachment()
-			attachment.image = image.withRenderingMode(.alwaysTemplate)
-			attachment.bounds = CGRect(x: 0, y: 0, width: imageHeight, height: imageHeight)
-			let attachmentAttributedString = NSMutableAttributedString(attachment: attachment)
-			
-			// Inherit string attributes.
-			attachmentAttributes[.foregroundColor] = attributes[.foregroundColor]
-			attachmentAttributes[.baselineOffset] = attributes[.baselineOffset]
-			attachmentAttributedString.addAttributes(
-				attachmentAttributes,
-				range: .init(location: 0, length: attachmentAttributedString.length)
-			)
-			
-			// Append to string.
-			
-			attributedString.append(attachmentAttributedString)
+		self.leadingImage = Typography.Image(
+			image: UIImage(named: "Star"),
+			size: CGSize(width: font.pointSize / 2.0, height: font.pointSize / 2.0)
+		)
+		self.trailingImage = Typography.Image(
+			image: UIImage(named: "Star")!.withRenderingMode(.alwaysTemplate),
+			size: CGSize(width: font.capHeight, height: font.capHeight)
+		)
+				
+		// Leading image.
+		if let leadingImage = leadingImage {
+			attributedString.append(leadingImage.attributedString(attributes: attributes))
+		}
+
+		attributedString.append(NSAttributedString(string: text, attributes: attributes))
+		
+		// Trailing image.
+		if let trailingImage = trailingImage {
+			attributedString.append(trailingImage.attributedString(attributes: attributes))
 		}
 		
 		// Set attributed text.
 		attributedText = attributedString
+	}
+}
+
+
+extension Typography.Image {
+	
+	func attributedString(attributes: [NSAttributedString.Key : Any]? = nil) -> NSAttributedString {
+		
+		// Attachment.
+		let attachment = NSTextAttachment()
+		attachment.image = image
+		attachment.bounds = CGRect(origin: CGPoint(x: -10, y: 0), size: size)
+		
+		// Attributes string.
+		let attributedString = NSMutableAttributedString(attachment: attachment)
+		
+		// Inherit from existing attributes (if any).
+		var attributes: [NSAttributedString.Key : Any] = attributes ?? [:]
+		
+		// Align image vertically.
+		if let font = attributes[.font] as? UIFont {
+			
+			// Vertical overlap of the image relative to the capital height of the font.
+			let overlap = (size.height - font.capHeight) / 2
+			let baselineOffset: CGFloat = attributes[.baselineOffset] as? CGFloat ?? 0
+			attributes[.baselineOffset] = baselineOffset - overlap
+		}
+		
+		attributedString.addAttributes(
+			attributes,
+			range: .init(location: 0, length: attributedString.length)
+		)
+		
+		return attributedString
 	}
 }
 
@@ -222,7 +267,6 @@ extension UILabel {
 		observer = Observer(
 			for: self,
 			onTextChange: { [weak self] text in
-				print("onTextChange { \(String(describing: text)) }")
 				self?.layout(text: text)
 			}
 		)
