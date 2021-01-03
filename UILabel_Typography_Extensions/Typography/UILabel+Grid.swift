@@ -2,14 +2,30 @@
 //  UILabel+Grid.swift
 //  UILabel_Typography_Extensions
 //
-//  Created by Geri Borbás on 02/01/2021.
+//  Copyright © 2020. Geri Borbás. All rights reserved.
+//  https://twitter.com/Geri_Borbas
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 //
 
 import UIKit
 
-
-
-// MARK: - Grid
 
 extension UILabel {
 	
@@ -31,32 +47,58 @@ extension UILabel {
 		super.layoutSubviews()
 		
 		if true || showGrid {
-			if layer.sublayers?.last?.name != "ascender" {
-				addGridLayers()
-			}
+			addGridLayerIfNeeded()
 		} else {
-			removeGridLayers()
+			removeGridLayerIfNeeded()
 		}
 	}
 	
-	fileprivate func addGridLayers() {
+	fileprivate static let gridLayerName = "Grid"
+	fileprivate static let compositingFilter = "multiplyBlendMode"
+	
+	fileprivate var gridLayer: CALayer? {
+		layer.sublayers?.first(where: { $0.name == Self.gridLayerName })
+	}
+	
+	fileprivate func addGridLayerIfNeeded() {
+		
+		// Only if needed.
+//		let height = gridLayer?.bounds.size.height
+//		let sizeChanged = gridLayer?.bounds.size.height != bounds.size.height
+//		print("sizeChanged: \(sizeChanged)")
+//		guard sizeChanged else {
+//			return
+//		}
+		
+		// Only if needed.
+		removeGridLayerIfNeeded()
+		
+		// Add.
+		let gridLayer = CALayer()
+		gridLayer.name = Self.gridLayerName
+		gridLayer.compositingFilter = Self.compositingFilter
+		layer.addSublayer(gridLayer)
 		
 		// Draw until fits.
 		let baselineOffset = abs(self.baselineOffset)
 		var cursor = CGFloat.zero
 		cursor += baselineOffset
 		while cursor + font.lineHeight - 2 < frame.size.height {
-			addGridLayers(offset: cursor)
+			addGridLayers(to: gridLayer, offset: cursor)
 			cursor += font.lineHeight
 			cursor += font.leading
 			cursor += baselineOffset
 			cursor += baselineOffset
 		}
-		
-		// self.backgroundColor = UIColor.red.withAlphaComponent(0.1)
 	}
 	
-	func addGridLayers(offset: CGFloat) {
+	fileprivate func removeGridLayerIfNeeded() {
+		if let gridLayer = gridLayer {
+			gridLayer.removeFromSuperlayer()
+		}
+	}
+	
+	func addGridLayers(to gridLayer: CALayer, offset: CGFloat) {
 		
 		// Top down.
 		let baseline = font.ascender + offset
@@ -65,24 +107,24 @@ extension UILabel {
 		let capHeight = baseline - font.capHeight
 		let ascender = baseline - font.ascender
 		
-		let green = UIColor(red: 21.0 / 255.0, green: 170.0 / 255.0, blue: 145.0 / 255.0, alpha: 0.05)
+		let green = UIColor(red: 21.0 / 255.0, green: 170.0 / 255.0, blue: 145.0 / 255.0, alpha: 0.3)
 		let gray = UIColor.label.withAlphaComponent(0.05)
 		
-		add(
+		gridLayer.addSublayer(shape(
 			path: rect(from: ascender, to: descender, cornerRadius: 2),
 			fill: gray,
 			stroke: gray
-		)
-		add(
+		))
+		gridLayer.addSublayer(shape(
 			path: rect(from: capHeight, to: baseline, cornerRadius: 2),
 			fill: green,
 			stroke: green
-		)
-		add(
+		))
+		gridLayer.addSublayer(shape(
 			path: line(at: xHeight),
 			stroke: gray,
 			dash: [2, 2]
-		)
+		))
 	}
 	
 	func rect(from: CGFloat, to: CGFloat, cornerRadius: CGFloat = 0) -> UIBezierPath {
@@ -98,20 +140,14 @@ extension UILabel {
 		return path
 	}
 	
-	func add(path: UIBezierPath, fill: UIColor? = nil, stroke: UIColor? = nil, dash: [NSNumber]? = nil) {
+	func shape(path: UIBezierPath, fill: UIColor? = nil, stroke: UIColor? = nil, dash: [NSNumber]? = nil) -> CAShapeLayer {
 		let layer = CAShapeLayer()
 		layer.path = path.cgPath
 		layer.fillColor = fill?.cgColor
 		layer.strokeColor = stroke?.cgColor
 		layer.lineDashPattern = dash
 		layer.lineCap = .round
-		layer.compositingFilter = "multiplyBlendMode"
-		self.layer.addSublayer(layer)
-	}
-	
-	fileprivate func removeGridLayers() {
-		_ = self.layer.sublayers?.map {
-			$0.removeFromSuperlayer()
-		}
+		layer.compositingFilter = Self.compositingFilter
+		return layer
 	}
 }

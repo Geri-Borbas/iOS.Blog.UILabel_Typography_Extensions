@@ -2,7 +2,26 @@
 //  ViewController.swift
 //  Label_Extensions
 //
-//  Created by Geri Borbás on 21/12/2020.
+//  Copyright © 2020. Geri Borbás. All rights reserved.
+//  https://twitter.com/Geri_Borbas
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 //
 
 import UIKit
@@ -15,50 +34,37 @@ class ViewController: UIViewController {
 	lazy var label = UILabel()
 		.with {
 			$0.textColor = .label
-			$0.font = UIFont.newYork(ofSize: 1024/26)
+			$0.font = UIFont.newYork(ofSize: 1024/26) // Results in 47 points line height
 			$0.numberOfLines = 0
 			
 			$0.adjustsFontSizeToFitWidth = false
 			$0.baselineAdjustment = .alignBaselines
 			$0.minimumScaleFactor = 1
 			$0.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.2)
-			// $0.lineBreakStrategy = .pushOut
 			
+			// 🤨
 			let lineHeight = CGFloat(87)
-			let fontLineHeight = $0.font.lineHeight
-			let lineHeightMultiple = lineHeight / fontLineHeight
-			let baselineOffset = (lineHeight - fontLineHeight) / 2.0 / 2.0
-			
-			print("lineHeight: \(lineHeight)")
-			print("fontLineHeight: \(fontLineHeight)")
-			print("lineHeightMultiple: \(lineHeightMultiple)")
-			print("fontLineHeight * lineHeightMultiple: \(fontLineHeight * lineHeightMultiple)")
-			print("baselineOffset: \(baselineOffset)")
+			let baselineOffset = (lineHeight - $0.font.lineHeight) / 2.0 / 2.0
 			
 			$0.attributedText = NSAttributedString(
 				string: string,
 				attributes: [
-					.font : UIFont.newYork(ofSize: 1024/26),
 					.baselineOffset : baselineOffset,
 					.paragraphStyle : NSMutableParagraphStyle().with {
-						$0.lineHeightMultiple = lineHeightMultiple
-						$0.lineSpacing = 0
 						$0.minimumLineHeight = lineHeight
 						$0.maximumLineHeight = lineHeight
-						$0.lineBreakMode = .byTruncatingTail
-						$0.lineBreakStrategy = .pushOut
-					},
-					.kern : -1,
-					.underlineStyle : NSUnderlineStyle.single.rawValue
+					}
 				])
-			$0.text = string
+			
+			// 🔑
+			$0.observeIfNeeded()
 			
 			$0.showGrid = true
 			$0.clipsToBounds = true
 		}
 		.inspect
 		.with {
-			$0.layer.cornerRadius = 15
+			$0.layer.cornerRadius = 5
 		}
 	
 	lazy var body = UIStackView()
@@ -82,23 +88,19 @@ class ViewController: UIViewController {
 				.inspect
 		)
 	
-	var strings: [String] = [
-		"Lorem ipsum dolor sit amet.",
-		"Consectetur adipiscing elit.",
-		"Sed do eiusmod tempor incididunt ut labore.",
-		"Et dolore magna aliqua."
+	var models: [(text: String, backgroundColor: UIColor)] = [
+		("Lorem ipsum dolor sit amet.", UIColor.systemBlue.withAlphaComponent(0.3)),
+		("Consectetur adipiscing elit.", UIColor.systemGreen.withAlphaComponent(0.3)),
+		("Sed do eiusmod tempor incididunt ut labore.", UIColor.systemOrange.withAlphaComponent(0.3)),
+		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.3))
 	]
 	
 	@objc func didTapChangeTextButton() {
-		
-		/// Update `text`.
-		if strings.isEmpty == false {
-			label.textColor = .systemGreen
-			label.text = strings.removeFirst()
+		if models.isEmpty == false {
+			let model = models.removeFirst()
+			label.text = model.text
+			label.backgroundColor = model.backgroundColor
 		}
-		
-		/// This is needed every time after the `text` property updated.
-		label.attributedText = label.attributedText
 	}
 	
 	@objc func didTapAttributesButton() {
@@ -146,7 +148,6 @@ fileprivate extension UIButton {
 	
 	var withButtonStyle: Self {
 		with {
-			// $0.titleLabel?.text = "Button"
 			$0.titleLabel?.textColor = .label
 			$0.titleLabel?.backgroundColor = .cyan
 			$0.titleLabel?.letterSpacing = 5
@@ -154,7 +155,6 @@ fileprivate extension UIButton {
 			$0.titleLabel?.lineBreakMode = .byTruncatingMiddle
 			$0.titleLabel?.pin(to: $0, insets: UIEdgeInsets.zero)
 			_ = $0.titleLabel?.withImages
-			// $0.setColor(UIColor.label, for: .normal)
 			$0.setTitleColor(.label, for: .normal)
 			$0.setAttributedTitle($0.titleLabel?.attributedText, for: .normal)
 		}

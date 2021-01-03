@@ -66,23 +66,18 @@ public class Typography {
 		
 		let image: UIImage
 		
-		
 		let size: CGSize
 		
 		public enum Align {
 			
-			case baseline
-			case centeredRelativeToPointSize
-			case centeredRelativeToCapitalSize
-			case descender
-			case ascender
-			case bottom
-			case top
+			case baseline(_ offset: CGFloat? = nil, _ size: CGSize? = nil)
+			case centered(_ offset: CGFloat? = nil, _ size: CGSize? = nil)
+			case fitToLineHeight
+			case fitToCapHeight
 		}
 		
 		/// Determine the bases of the vertical alignment (centering) of the image
-		let align: Align = .baseline
-		
+		let align: Align = .baseline()
 		
 		/// If you set an image taller than the `ascender` of the label font, then
 		/// you need to set the lineheight after the setting the image. If the image
@@ -96,7 +91,6 @@ public class Typography {
 				return nil
 			}
 		}
-		
 		
 		public static func == (lhs: Typography.Image, rhs: Typography.Image) -> Bool {
 			false

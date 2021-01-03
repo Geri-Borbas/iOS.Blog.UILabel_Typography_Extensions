@@ -10,9 +10,7 @@ import Foundation
 
 extension NSAttributedString {
 	
-	
 	var entireRange: NSRange {
 		NSRange(location: 0, length: self.length)
 	}
-	
 }
