@@ -18,12 +18,12 @@ public protocol ObjectWithable: class {
 	/// Provides a closure to configure instances inline.
 	/// - Parameter closure: A closure `self` as the argument.
 	/// - Returns: Simply returns the instance after called the `closure`.
-	@inlinable @inline(__always) @discardableResult func with(_ closure: (_ instance: T) -> Void) -> T
+	@discardableResult func with(_ closure: (_ instance: T) -> Void) -> T
 }
 
 public extension ObjectWithable {
 	
-	@inlinable @inline(__always) @discardableResult public func with(_ closure: (_ instance: Self) -> Void) -> Self {
+	@discardableResult func with(_ closure: (_ instance: Self) -> Void) -> Self {
 		closure(self)
 		return self
 	}
@@ -41,12 +41,12 @@ public protocol Withable {
 	/// Provides a closure to configure instances inline.
 	/// - Parameter closure: A closure with a mutable copy of `self` as the argument.
 	/// - Returns: Simply returns the mutated copy of the instance after called the `closure`.
-	@inlinable @inline(__always) @discardableResult func with(_ closure: (_ instance: inout T) -> Void) -> T
+	@discardableResult func with(_ closure: (_ instance: inout T) -> Void) -> T
 }
 
 public extension Withable {
 
-	@inlinable @inline(__always) @discardableResult func with(_ closure: (_ instance: inout Self) -> Void) -> Self {
+	@discardableResult func with(_ closure: (_ instance: inout Self) -> Void) -> Self {
 		var copy = self
 		closure(&copy)
 		return copy

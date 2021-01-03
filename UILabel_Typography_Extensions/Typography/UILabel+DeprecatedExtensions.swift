@@ -63,7 +63,7 @@ extension UILabel: TypographyExtensions {
 	fileprivate struct Keys {
 		
 		static var typography: UInt8 = 0
-		static var observer: UInt8 = 4
+		static var showGrid: UInt8 = 8
 	}
 	
 	fileprivate var _typography: Typography? {
@@ -82,6 +82,8 @@ extension UILabel: TypographyExtensions {
 }
 
 
+// MARK: - Layout
+
 extension UILabel {
 	
 	fileprivate var needsLayout: Bool {
@@ -98,7 +100,21 @@ extension UILabel {
 		trailingImage != nil
 	}
 	
+	fileprivate var baselineOffset: CGFloat {
+		
+		// Align text center vertically relative to the line height (if any).
+		if let lineHeight = lineHeight {
+			let baselineOffsetPoints = (lineHeight - font.lineHeight) / 2.0
+			let divider: CGFloat = hasImage ? 1.0 : 2.0 // For some reason (?) it needs to be halved (if no image attachment present)
+			return baselineOffsetPoints // / divider
+		} else {
+			return 0
+		}
+	}
+	
 	fileprivate func layout(text: String?) {
+		
+		print("layout(text: \(text)")
 		
 		// Only if any.
 		guard let text = text else {
@@ -106,15 +122,12 @@ extension UILabel {
 		}
 		
 		// Only if needed.
-//		guard needsLayout else {
-//			return
-//		}
-		
-		print("\n")
-		print("layout(text: `\(text)`)")
+		guard needsLayout else {
+			return
+		}
 		
 		// Observe.
-		observeIfNeeded()
+		// observeIfNeeded()
 		
 		// Collect attributes.
 		var attributes: [NSAttributedString.Key : Any] = [:]
@@ -144,13 +157,11 @@ extension UILabel {
 		
 		// Underline (if any).
 		if let underline = underline {
-			print("underline: \(underline)))")
 			attributes[.underlineStyle] = underline.rawValue
 		}
 
 		// Strikethrough (if any).
 		if let strikethrough = strikethrough {
-			print("strikethrough: \(strikethrough)))")
 			attributes[.strikethroughStyle] = strikethrough.rawValue
 		}
 		
@@ -162,15 +173,7 @@ extension UILabel {
 		
 		// Set line height (if any).
 		if let lineHeight = lineHeight {
-			
-			print("lineHeight: \(lineHeight)))")
-			
-			// Align text center vertically relative to the line height.
-			let baselineOffsetPoints = (lineHeight - font.lineHeight) / 2.0
-			let divider: CGFloat = hasImage ? 1.0 : 2.0 // For some reason (?) it needs to be halved (if no image attachment present)
-			attributes[.baselineOffset] = baselineOffsetPoints / divider
-			
-			// Paragraph.
+			attributes[.baselineOffset] = baselineOffset
 			paragraphStyle.minimumLineHeight = lineHeight
 			paragraphStyle.maximumLineHeight = lineHeight
 		}
@@ -180,27 +183,18 @@ extension UILabel {
 		
 		// Kerning (if any).
 		if let letterSpacing = letterSpacing {
-			print("letterSpacing: \(letterSpacing)))")
 			attributes[.kern] = letterSpacing
 		}
 			
 		// Create attributed string.
 		let attributedString = NSMutableAttributedString()
-		
-		self.leadingImage = Typography.Image(
-			image: UIImage(named: "Star"),
-			size: CGSize(width: font.pointSize / 2.0, height: font.pointSize / 2.0)
-		)
-		self.trailingImage = Typography.Image(
-			image: UIImage(named: "Star")!.withRenderingMode(.alwaysTemplate),
-			size: CGSize(width: font.capHeight, height: font.capHeight)
-		)
 				
 		// Leading image.
 		if let leadingImage = leadingImage {
 			attributedString.append(leadingImage.attributedString(attributes: attributes))
 		}
 
+		// Text.
 		attributedString.append(NSAttributedString(string: text, attributes: attributes))
 		
 		// Trailing image.
@@ -221,7 +215,8 @@ extension Typography.Image {
 		// Attachment.
 		let attachment = NSTextAttachment()
 		attachment.image = image
-		attachment.bounds = CGRect(origin: CGPoint(x: -10, y: 0), size: size)
+		attachment.bounds = CGRect(origin: .zero,
+			size: size)
 		
 		// Attributes string.
 		let attributedString = NSMutableAttributedString(attachment: attachment)
@@ -237,7 +232,6 @@ extension Typography.Image {
 			let baselineOffset: CGFloat = attributes[.baselineOffset] as? CGFloat ?? 0
 			attributes[.baselineOffset] = baselineOffset - overlap
 		}
-		
 		attributedString.addAttributes(
 			attributes,
 			range: .init(location: 0, length: attributedString.length)
@@ -248,56 +242,103 @@ extension Typography.Image {
 }
 
 
+// MARK: - Grid
+
 extension UILabel {
 	
-	fileprivate var observer: Observer? {
+	public var showGrid: Bool {
 		get {
-			objc_getAssociatedObject(self, &Keys.observer) as? Observer
+			(objc_getAssociatedObject(self, &Keys.showGrid) as? NSNumber)?.boolValue ?? false
 		}
 		set {
-			objc_setAssociatedObject(self, &Keys.observer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+			objc_setAssociatedObject(self, &Keys.showGrid, NSNumber(value: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 		}
 	}
-
-	fileprivate func observeIfNeeded() {
-		guard observer == nil else {
-			return
+	
+	override open func layoutSubviews() {
+		super.layoutSubviews()
+		
+		if true || showGrid {
+			if layer.sublayers?.last?.name != "ascender" {
+				addGridLayers()
+			}
+		} else {
+			removeGridLayers()
+		}
+	}
+	
+	fileprivate func addGridLayers() {
+		
+		// Draw until fits.
+		var cursor = CGFloat.zero
+		cursor += baselineOffset
+		while cursor + font.lineHeight - 2 < frame.size.height {
+			addGridLayers(offset: cursor)
+			cursor += font.lineHeight
+			cursor += font.leading
+			cursor += baselineOffset
+			cursor += baselineOffset
 		}
 		
-		observer = Observer(
-			for: self,
-			onTextChange: { [weak self] text in
-				self?.layout(text: text)
-			}
+		self.backgroundColor = UIColor.red.withAlphaComponent(0.1)
+	}
+	
+	func addGridLayers(offset: CGFloat) {
+		
+		// Top down.
+		let baseline = font.ascender + offset
+		let descender = baseline - font.descender
+		let xHeight = baseline - font.xHeight
+		let capHeight = baseline - font.capHeight
+		let ascender = baseline - font.ascender
+		
+		let blue = UIColor.systemBlue.withAlphaComponent(0.05)
+		let gray = UIColor.label.withAlphaComponent(0.05)
+		
+		add(
+			path: rect(from: ascender, to: descender, cornerRadius: 2),
+			fill: blue,
+			stroke: blue
+		)
+		add(
+			path: rect(from: capHeight, to: baseline),
+			fill: gray,
+			stroke: gray
+		)
+		add(
+			path: line(at: xHeight),
+			stroke: gray,
+			dash: [2, 2]
 		)
 	}
-}
-
-
-fileprivate class Observer: NSObject {
 	
-	typealias TextChangeAction = (_ text: String?) -> Void
-	let onTextChange: TextChangeAction
-	private var observer: NSKeyValueObservation?
-	
-	init(for label: UILabel, onTextChange: @escaping TextChangeAction) {
-		self.onTextChange = onTextChange
-		super.init()
-		observe(label)
+	func rect(from: CGFloat, to: CGFloat, cornerRadius: CGFloat = 0) -> UIBezierPath {
+		let rect = CGRect(x: 0, y: from, width: frame.size.width, height: to - from)
+		let cornerRadius = CGSize(width: cornerRadius, height: cornerRadius)
+		return UIBezierPath(roundedRect: rect, byRoundingCorners: .allCorners, cornerRadii: cornerRadius)
 	}
 	
-	func observe(_ label: UILabel) {
-		observer = label.observe(
-			\.text,
-			options:  [.new, .old],
-			changeHandler: { [weak self] _, change in
-				self?.onTextChange(change.newValue ?? nil)
-			}
-		)
+	func line(at: CGFloat) -> UIBezierPath {
+		let path = UIBezierPath()
+		path.move(to: CGPoint(x: 0, y: at))
+		path.addLine(to: CGPoint(x: frame.size.width, y: at))
+		return path
 	}
 	
-	deinit {
-		print("\(Self.self).\(#function)")
-		observer?.invalidate()
+	func add(path: UIBezierPath, fill: UIColor? = nil, stroke: UIColor? = nil, dash: [NSNumber]? = nil) {
+		let layer = CAShapeLayer()
+		layer.path = path.cgPath
+		layer.fillColor = fill?.cgColor
+		layer.strokeColor = stroke?.cgColor
+		layer.lineDashPattern = dash
+		layer.lineCap = .round
+		layer.compositingFilter = "multiplyBlendMode"
+		self.layer.addSublayer(layer)
+	}
+	
+	fileprivate func removeGridLayers() {
+		_ = self.layer.sublayers?.map {
+			$0.removeFromSuperlayer()
+		}
 	}
 }

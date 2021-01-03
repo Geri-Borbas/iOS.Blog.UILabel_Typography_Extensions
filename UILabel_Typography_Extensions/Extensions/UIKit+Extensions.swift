@@ -42,16 +42,16 @@ extension UIView {
 		rightAnchor.constraint(equalTo: to.rightAnchor, constant: -insets.right).isActive = true
 	}
 	
-	var withRedLines: UIView {
+	var withRedLines: Self {
 		with {
 			$0.layer.borderWidth = 1
 			$0.layer.cornerRadius = 2
 			$0.layer.borderColor = UIColor.red.withAlphaComponent(0.3).cgColor
-			$0.backgroundColor = UIColor.red.withAlphaComponent(0.1)
+			// $0.backgroundColor = UIColor.red.withAlphaComponent(0.1)
 		}
 	}
 	
-	var inspect: UIView {
+	var inspect: Self {
 		withRedLines
 	}
 }

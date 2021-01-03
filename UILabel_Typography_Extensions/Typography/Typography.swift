@@ -28,7 +28,7 @@
 import UIKit
 
 
-protocol TypographyExtensions {
+public protocol TypographyExtensions {
 	
 	/// The line height for the reciever (setter lays out and sets `attributedText`).
 	var lineHeight: CGFloat? { get set }
@@ -47,6 +47,9 @@ protocol TypographyExtensions {
 	
 	/// The trailing image for the reciever (setter lays out and sets `attributedText`).
 	var trailingImage: Typography.Image? { get set }
+	
+	/// Show typographic grid.
+	var showGrid: Bool { get set }
 }
 
 
@@ -62,6 +65,8 @@ public class Typography {
 	public struct Image: Equatable {
 		
 		let image: UIImage
+		
+		
 		let size: CGSize
 		
 		public enum Align {
@@ -78,6 +83,11 @@ public class Typography {
 		/// Determine the bases of the vertical alignment (centering) of the image
 		let align: Align = .baseline
 		
+		
+		/// If you set an image taller than the `ascender` of the label font, then
+		/// you need to set the lineheight after the setting the image. If the image
+		/// height is taller than the `lineheight`, then additional spacing will be
+		/// added below the descender line (seemingly).
 		init?(image: UIImage?, size: CGSize? = nil) {
 			if let image = image {
 				self.image = image
@@ -85,6 +95,11 @@ public class Typography {
 			} else {
 				return nil
 			}
+		}
+		
+		
+		public static func == (lhs: Typography.Image, rhs: Typography.Image) -> Bool {
+			false
 		}
 	}
 	
