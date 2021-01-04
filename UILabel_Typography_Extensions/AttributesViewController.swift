@@ -12,6 +12,8 @@ class AttributesViewController: UIViewController {
 	
 	var label_1: UILabel!
 	var label_2: UILabel!
+	var label_3: UILabel!
+	var label_4: UILabel!
 	
 	lazy var body = UIStackView()
 		.vertical(spacing: 10)
@@ -62,18 +64,22 @@ class AttributesViewController: UIViewController {
 				.with(text: "Default")
 				.with {
 					$0.textColor = .systemGray
-					$0.font = .preferredFont(forTextStyle: .body)
+					$0.font = .preferredFont(forTextStyle: .largeTitle)
 					$0.lineHeight = 50
 				}
 				.with {
 					$0.text = "Line Height / Recolored"
-					$0.textColor = .green
+					$0.textColor = .systemGreen
+					$0.layer.compositingFilter = "multiplyBlendMode"
 					$0.showGrid = true
 				 }
-				.withImages,
+				.withImages
+				.with {
+					self.label_3 = $0
+				},
 			
 			UILabel()
-				.with(text: "Letter Spacing / Alignment / Line Break Mode")
+				.with(text: "🔠Letter Spacing / Alignment / Line Break Mode")
 				.with {
 					$0.textColor = .systemGray
 					$0.font = .preferredFont(forTextStyle: .body)
@@ -85,7 +91,10 @@ class AttributesViewController: UIViewController {
 					$0.lineBreakMode = .byTruncatingHead
 					$0.showGrid = true
 				 }
-				.withImages,
+				.withImages
+				.with {
+					self.label_4 = $0
+				},
 			
 			UIView
 				.spacer
@@ -110,5 +119,9 @@ class AttributesViewController: UIViewController {
 		
 		print("\(label_2.underline)")
 		print("\(label_2.strikethrough)")
+		
+		print("\(label_3.lineHeight)")
+		
+		print("\(label_4.letterSpacing)")
 	}
 }

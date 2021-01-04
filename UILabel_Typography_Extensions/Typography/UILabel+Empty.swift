@@ -36,8 +36,8 @@ extension UILabel: TypographyExtensions {
 	}
 	
 	public var letterSpacing: CGFloat? {
-		get { nil }
-		set { }
+		get { getAttribute(.kern) }
+		set { setAttribute(.kern, value: newValue) }
 	}
 	
 	public var underline: NSUnderlineStyle? {
