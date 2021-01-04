@@ -53,7 +53,9 @@ extension UILabel {
 				
 				/// This is needed every time after the `text` property updated
 				/// in order to render a consistent baseline offset.
-				self?.attributedText = self?.attributedText
+				if let attributedText = self?.attributedText {
+					self?.attributedText = attributedText
+				}
 			}
 		)
 	}

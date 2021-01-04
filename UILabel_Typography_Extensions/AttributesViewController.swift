@@ -10,9 +10,33 @@ import UIKit
 
 class AttributesViewController: UIViewController {
 	
+	var label_1: UILabel!
+	var label_2: UILabel!
+	
 	lazy var body = UIStackView()
 		.vertical(spacing: 10)
 		.views(
+			
+			UILabel()
+				.with(text: "Default")
+				.with {
+					$0.textColor = .label
+					$0.font = .preferredFont(forTextStyle: .headline)
+					$0.underline = .double
+					$0.lineHeight = 100
+				}
+				.with {
+					$0.textColor = .orange
+					$0.lineBreakMode = .byTruncatingHead
+					$0.numberOfLines = 0
+					$0.strikethrough = .single
+					$0.text = "Line Height / Recolored / Underline"
+					$0.showGrid = true
+				 }
+				.withImages
+				.with {
+					self.label_1 = $0
+				},
 			
 			UILabel()
 				.with(text: "Default")
@@ -25,14 +49,17 @@ class AttributesViewController: UIViewController {
 				.with {
 					$0.textColor = .orange
 					$0.lineBreakMode = .byTruncatingHead
-					$0.showGrid = true
 					$0.numberOfLines = 0
 					$0.text = "Line Height / Recolored / Strikethrough"
+					$0.showGrid = true
 				 }
-				.withImages,
+				.withImages
+				.with {
+					self.label_2 = $0
+				},
 			
 			UILabel()
-				.with(text: "Hello World!")
+				.with(text: "Default")
 				.with {
 					$0.textColor = .systemGray
 					$0.font = .preferredFont(forTextStyle: .body)
@@ -74,17 +101,14 @@ class AttributesViewController: UIViewController {
 			insets: UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
 		)
 	}
-}
-
-
-fileprivate extension UILabel {
 	
-	var withGlyphStyle: Self {
-		with {
-			$0.textColor = .gray
-			$0.backgroundColor = .cyan
-			$0.font = UIFont.newYork(ofSize: 128)
-			$0.showGrid = true
-		}
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		print("\(label_1.underline)")
+		print("\(label_1.strikethrough)")
+		
+		print("\(label_2.underline)")
+		print("\(label_2.strikethrough)")
 	}
 }

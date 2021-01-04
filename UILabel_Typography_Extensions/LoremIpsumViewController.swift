@@ -27,6 +27,7 @@ class LoremIpsumViewController: UIViewController {
 				.with {
 					$0.textColor = .blue
 					$0.numberOfLines = 0
+					$0.showGrid = true
 				}
 				.with(text: loremIpsum),
 			

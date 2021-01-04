@@ -17,14 +17,13 @@ extension UIFont {
 	}
 	
 	static func newYork(ofSize size: CGFloat) -> UIFont {
-		if let newYork = UIFont.systemFont(ofSize: size, weight: .regular)
-			.fontDescriptor
-			.withSymbolicTraits(.traitItalic)?
-			.withDesign(.serif) {
-			return UIFont(descriptor: newYork, size: size)
+		let font: UIFont
+		if let newYork = UIFont.italicSystemFont(ofSize: size).fontDescriptor.withDesign(.serif) {
+			font = UIFont(descriptor: newYork, size: size)
 		} else {
-			return UIFont.preferredFont(forTextStyle: .body)
+			font = UIFont.italicSystemFont(ofSize: size)
 		}
+		return font
 	}
 	
 	static func inspectNewYork() {

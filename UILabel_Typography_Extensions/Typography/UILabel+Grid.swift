@@ -43,35 +43,26 @@ extension UILabel {
 		}
 	}
 	
-	override open func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if true || showGrid {
-			addGridLayerIfNeeded()
-		} else {
-			removeGridLayerIfNeeded()
-		}
-	}
-	
 	fileprivate static let gridLayerName = "Grid"
+	
 	fileprivate static let compositingFilter = "multiplyBlendMode"
 	
 	fileprivate var gridLayer: CALayer? {
 		layer.sublayers?.first(where: { $0.name == Self.gridLayerName })
 	}
 	
+	override open func layoutSubviews() {
+		super.layoutSubviews()
+		removeGridLayerIfNeeded()
+		addGridLayerIfNeeded()
+	}
+	
 	fileprivate func addGridLayerIfNeeded() {
 		
 		// Only if needed.
-//		let height = gridLayer?.bounds.size.height
-//		let sizeChanged = gridLayer?.bounds.size.height != bounds.size.height
-//		print("sizeChanged: \(sizeChanged)")
-//		guard sizeChanged else {
-//			return
-//		}
-		
-		// Only if needed.
-		removeGridLayerIfNeeded()
+		guard showGrid else {
+			return
+		}
 		
 		// Add.
 		let gridLayer = CALayer()
@@ -98,7 +89,7 @@ extension UILabel {
 		}
 	}
 	
-	func addGridLayers(to gridLayer: CALayer, offset: CGFloat) {
+	fileprivate func addGridLayers(to gridLayer: CALayer, offset: CGFloat) {
 		
 		// Top down.
 		let baseline = font.ascender + offset
@@ -107,40 +98,46 @@ extension UILabel {
 		let capHeight = baseline - font.capHeight
 		let ascender = baseline - font.ascender
 		
-		let green = UIColor(red: 21.0 / 255.0, green: 170.0 / 255.0, blue: 145.0 / 255.0, alpha: 0.3)
-		let gray = UIColor.label.withAlphaComponent(0.05)
-		
+		let baselineOffset = abs(self.baselineOffset)
+		let top = ascender - baselineOffset
+		let bottom = descender + baselineOffset
+
+		gridLayer.addSublayer(shape(
+			path: rect(from: top, to: bottom, cornerRadius: 2),
+			fill: UIColor.gray.withAlphaComponent(0.05),
+			stroke: UIColor.gray.withAlphaComponent(0.05)
+		))
 		gridLayer.addSublayer(shape(
 			path: rect(from: ascender, to: descender, cornerRadius: 2),
-			fill: gray,
-			stroke: gray
+			fill: UIColor.gray.withAlphaComponent(0.05),
+			stroke: UIColor.gray.withAlphaComponent(0.05)
 		))
 		gridLayer.addSublayer(shape(
 			path: rect(from: capHeight, to: baseline, cornerRadius: 2),
-			fill: green,
-			stroke: green
+			fill: .teal,
+			stroke: .teal
 		))
 		gridLayer.addSublayer(shape(
 			path: line(at: xHeight),
-			stroke: gray,
+			stroke: .teal,
 			dash: [2, 2]
 		))
 	}
 	
-	func rect(from: CGFloat, to: CGFloat, cornerRadius: CGFloat = 0) -> UIBezierPath {
-		let rect = CGRect(x: 0, y: from, width: frame.size.width, height: to - from).insetBy(dx: 0.5, dy: 0.5)
+	fileprivate func rect(from: CGFloat, to: CGFloat, cornerRadius: CGFloat = 0) -> UIBezierPath {
+		let rect = CGRect(x: 0, y: from, width: frame.size.width, height: to - from) // .insetBy(dx: 0.5, dy: 0.5)
 		let cornerRadius = CGSize(width: cornerRadius, height: cornerRadius)
 		return UIBezierPath(roundedRect: rect, byRoundingCorners: .allCorners, cornerRadii: cornerRadius)
 	}
 	
-	func line(at: CGFloat) -> UIBezierPath {
+	fileprivate func line(at: CGFloat) -> UIBezierPath {
 		let path = UIBezierPath()
 		path.move(to: CGPoint(x: 2, y: at))
 		path.addLine(to: CGPoint(x: frame.size.width - 2, y: at))
 		return path
 	}
 	
-	func shape(path: UIBezierPath, fill: UIColor? = nil, stroke: UIColor? = nil, dash: [NSNumber]? = nil) -> CAShapeLayer {
+	fileprivate func shape(path: UIBezierPath, fill: UIColor? = nil, stroke: UIColor? = nil, dash: [NSNumber]? = nil) -> CAShapeLayer {
 		let layer = CAShapeLayer()
 		layer.path = path.cgPath
 		layer.fillColor = fill?.cgColor
@@ -149,5 +146,21 @@ extension UILabel {
 		layer.lineCap = .round
 		layer.compositingFilter = Self.compositingFilter
 		return layer
+	}
+}
+
+
+fileprivate extension UILabel {
+	
+	var paragraphStyle: NSParagraphStyle? {
+		attributedText?.attribute(NSAttributedString.Key.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle
+	}
+	
+	var baselineOffset: CGFloat {
+		guard let lineHeight = paragraphStyle?.maximumLineHeight,
+			  lineHeight != 0.0 else {
+			return 0.0
+		}
+		return (lineHeight - font.lineHeight) / 2.0
 	}
 }

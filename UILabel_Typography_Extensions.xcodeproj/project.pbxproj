@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		551B425F259BCE40001310A9 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551B425E259BCE40001310A9 /* UIFont+Extensions.swift */; };
 		554AF31825961B6200A23E41 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 554AF31725961B6200A23E41 /* README.md */; };
+		55653BE625A36E0300678FD9 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34F25A0B32D00E7F48B /* NSAttributedString+Extensions.swift */; };
+		559795E525A259E400A757A3 /* UIColor+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559795E425A259E400A757A3 /* UIColor+Styles.swift */; };
 		55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236A125912BBE0007BC69 /* AppDelegate.swift */; };
 		55F236A425912BBE0007BC69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236A325912BBE0007BC69 /* SceneDelegate.swift */; };
 		55F236A825912BC30007BC69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55F236A725912BC30007BC69 /* Assets.xcassets */; };
@@ -23,13 +25,13 @@
 		55F7E34425A0AA5E00E7F48B /* GlyphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34325A0AA5E00E7F48B /* GlyphViewController.swift */; };
 		55F7E34825A0AD7F00E7F48B /* AttributesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34725A0AD7F00E7F48B /* AttributesViewController.swift */; };
 		55F7E34B25A0ADFA00E7F48B /* UILabel+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34A25A0ADFA00E7F48B /* UILabel+Empty.swift */; };
-		55F7E35025A0B32D00E7F48B /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34F25A0B32D00E7F48B /* NSAttributedString+Extensions.swift */; };
 		55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7F0A1259A6F03001BEF90 /* Typography.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		551B425E259BCE40001310A9 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		554AF31725961B6200A23E41 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		559795E425A259E400A757A3 /* UIColor+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Styles.swift"; sourceTree = "<group>"; };
 		55F2369E25912BBE0007BC69 /* UILabel_Typography_Extensions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UILabel_Typography_Extensions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F236A125912BBE0007BC69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55F236A325912BBE0007BC69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,6 +72,8 @@
 				55F7E34A25A0ADFA00E7F48B /* UILabel+Empty.swift */,
 				55F7E33125A03D8300E7F48B /* UILabel+Observer.swift */,
 				55F7E33825A03FE500E7F48B /* UILabel+Grid.swift */,
+				559795E425A259E400A757A3 /* UIColor+Styles.swift */,
+				55F7E34F25A0B32D00E7F48B /* NSAttributedString+Extensions.swift */,
 				558D107725A15277005DB3DA /* Drafts */,
 			);
 			path = Typography;
@@ -79,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				55F7E33425A03F9600E7F48B /* UILabel+Typograpy.swift */,
-				55F7E34F25A0B32D00E7F48B /* NSAttributedString+Extensions.swift */,
 				55F236CE259135680007BC69 /* UILabel+DeprecatedExtensions.swift */,
 				551B425E259BCE40001310A9 /* UIFont+Extensions.swift */,
 			);
@@ -203,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55F7E34B25A0ADFA00E7F48B /* UILabel+Empty.swift in Sources */,
+				55653BE625A36E0300678FD9 /* NSAttributedString+Extensions.swift in Sources */,
 				55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */,
 				55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */,
 				55F236CA25912E690007BC69 /* PreviewView.swift in Sources */,
@@ -213,9 +217,9 @@
 				55F236A425912BBE0007BC69 /* SceneDelegate.swift in Sources */,
 				551B425F259BCE40001310A9 /* UIFont+Extensions.swift in Sources */,
 				55F7E34125A0A91E00E7F48B /* LoremIpsumViewController.swift in Sources */,
+				559795E525A259E400A757A3 /* UIColor+Styles.swift in Sources */,
 				55F7E34825A0AD7F00E7F48B /* AttributesViewController.swift in Sources */,
 				55F236B725912BF20007BC69 /* ViewController.swift in Sources */,
-				55F7E35025A0B32D00E7F48B /* NSAttributedString+Extensions.swift in Sources */,
 				55F7E33E25A051FE00E7F48B /* UILabel+Grid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -30,24 +30,50 @@ import UIKit
 class ViewController: UIViewController {
 	
 	let string = "Underline / Line Height / Letter" // Spacing
+	let loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 	
-	lazy var label = UILabel()
+	lazy var label_1: UILabel = {
+				
+		// Properties.
+		let label = UILabel()
+		label.font = UIFont.newYork(ofSize: 1024.0 / 26.0)
+		label.textColor = .text
+		label.layer.compositingFilter = "multiplyBlendMode"
+		label.numberOfLines = 0
+		label.showGrid = true
+		label.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+		
+		// Line height.
+		let paragraphStyle = NSMutableParagraphStyle()
+		paragraphStyle.minimumLineHeight = CGFloat(87)
+		paragraphStyle.maximumLineHeight = CGFloat(87)
+		label.attributedText = NSAttributedString(
+			string: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+			attributes: [
+				.baselineOffset : 10, // (87 - 47) / 2 / 2
+				.paragraphStyle : paragraphStyle
+			]
+		)
+					   
+		return label
+	}()
+	
+	lazy var label_2 = UILabel()
 		.with {
-			$0.textColor = .label
-			$0.font = UIFont.newYork(ofSize: 1024/26) // Results in 47 points line height
+			
+			// Properties.
+			$0.font = UIFont.newYork(ofSize: 1024.0 / 26.0)
+			$0.textColor = .text
+			$0.layer.compositingFilter = "multiplyBlendMode"
 			$0.numberOfLines = 0
+			$0.showGrid = true
+			$0.text = loremIpsum
 			
-			$0.adjustsFontSizeToFitWidth = false
-			$0.baselineAdjustment = .alignBaselines
-			$0.minimumScaleFactor = 1
-			$0.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.2)
-			
-			// 🤨
+			// Line height.
 			let lineHeight = CGFloat(87)
 			let baselineOffset = (lineHeight - $0.font.lineHeight) / 2.0 / 2.0
-			
 			$0.attributedText = NSAttributedString(
-				string: string,
+				string: loremIpsum,
 				attributes: [
 					.baselineOffset : baselineOffset,
 					.paragraphStyle : NSMutableParagraphStyle().with {
@@ -55,22 +81,16 @@ class ViewController: UIViewController {
 						$0.maximumLineHeight = lineHeight
 					}
 				])
-			
+
 			// 🔑
 			$0.observeIfNeeded()
 			
-			$0.showGrid = true
-			$0.clipsToBounds = true
-		}
-		.inspect
-		.with {
-			$0.layer.cornerRadius = 5
-		}
+		}.inspect
 	
 	lazy var body = UIStackView()
 		.vertical(spacing: 10)
 		.views(
-			label,
+			label_1.inspect,
 			UIButton()
 				.with(title: "Change Text", target: self, selector: #selector(didTapChangeTextButton))
 				.inspect,
@@ -98,8 +118,8 @@ class ViewController: UIViewController {
 	@objc func didTapChangeTextButton() {
 		if models.isEmpty == false {
 			let model = models.removeFirst()
-			label.text = model.text
-			label.backgroundColor = model.backgroundColor
+			label_1.text = model.text
+			label_1.backgroundColor = .white // model.backgroundColor
 		}
 	}
 	
@@ -121,8 +141,13 @@ class ViewController: UIViewController {
 		view.backgroundColor = .systemBackground
 		body.pin(
 			to: view.safeAreaLayoutGuide,
-			insets: UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
+			insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
 		)
+		
+		// 🔑
+//		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//			self.label_1.text = self.label_1.text
+//		}
     }
 }
 

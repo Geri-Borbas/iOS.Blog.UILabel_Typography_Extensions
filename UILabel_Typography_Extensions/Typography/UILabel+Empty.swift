@@ -41,13 +41,13 @@ extension UILabel: TypographyExtensions {
 	}
 	
 	public var underline: NSUnderlineStyle? {
-		get { nil }
-		set { }
+		get { getAttribute(.underlineStyle) }
+		set { setAttribute(.underlineStyle, value: newValue) }
 	}
 	
 	public var strikethrough: NSUnderlineStyle? {
-		get { nil }
-		set { }
+		get { getAttribute(.strikethroughStyle) }
+		set { setAttribute(.strikethroughStyle, value: newValue) }
 	}
 	
 	public var leadingImage: Typography.Image? {
@@ -59,24 +59,83 @@ extension UILabel: TypographyExtensions {
 		get { nil }
 		set { }
 	}
-		
-	public var baselineOffset: CGFloat {
-		let baselineOffset = (_lineHeight - font.lineHeight) / 2.0
-		return baselineOffset
-		// (attributedText?.attribute(.baselineOffset, at: 0, effectiveRange: nil) as? CGFloat ?? 0) // 2.0
-	}
 }
 
 
-fileprivate extension UILabel {
+extension UILabel {
 	
+	// MARK: Get attributes
 	
-	var paragraphStyle: NSParagraphStyle? {
-		attributedText?.attribute(NSAttributedString.Key.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle
+	fileprivate var attributes: [NSAttributedString.Key : Any]? {
+		get {
+			if let attributedText = attributedText {
+				return attributedText.attributes(at: 0, effectiveRange: nil)
+			} else {
+				return nil
+			}
+		}
 	}
 	
-	var _lineHeight: CGFloat {
-		let _lineHeight = paragraphStyle?.maximumLineHeight ?? font.lineHeight
-		return _lineHeight
+	func getAttribute<AttributeType>(_ key: NSAttributedString.Key) -> AttributeType? {
+		print("getAttribute(\(key))")
+		return attributes?[key] as? AttributeType
+	}
+	
+	func getAttribute<AttributeType>(_ key: NSAttributedString.Key) -> AttributeType? where AttributeType: OptionSet {
+		print("getAttribute(\(key))")
+		if let attribute = attributes?[key] as? AttributeType.RawValue {
+			return .init(rawValue: attribute)
+		} else {
+			return nil
+		}
+	}
+	
+	// MARK: Set attributes
+	
+	func setAttribute<AttributeType>(_ key: NSAttributedString.Key, value: AttributeType?) where AttributeType: Any  {
+		if let value = value {
+			addAttribute(key, value: value)
+		} else {
+			removeAttribute(key)
+		}
+	}
+	
+	func setAttribute<AttributeType>(_ key: NSAttributedString.Key, value: AttributeType?) where AttributeType: OptionSet  {
+		if let value = value {
+			addAttribute(key, value: value.rawValue)
+		} else {
+			removeAttribute(key)
+		}
+	}
+	
+	func addAttribute(_ key: NSAttributedString.Key, value: Any) {
+		print("addAttribute(\(key), value: \(value)")
+		if let attributedText = attributedText {
+			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
+			mutableAttributedText.addAttribute(key, value: value, range: attributedText.entireRange)
+			self.attributedText = mutableAttributedText
+		} else {
+			self.attributedText = NSAttributedString(string: text ?? "", attributes: [ key: value ])
+		}
+	}
+	
+	func removeAttribute(_ key: NSAttributedString.Key) {
+		print("removeAttribute(\(key)")
+		if let attributedText = attributedText {
+			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
+			mutableAttributedText.removeAttribute(key, range: attributedText.entireRange)
+			self.attributedText = mutableAttributedText
+		}
+	}
+	
+	// MARK: Set paragraph style properties
+	
+	func setParagraphStyleProperty<ValueType>(_ value: ValueType, for keyPath: ReferenceWritableKeyPath<NSMutableParagraphStyle, ValueType>) {
+		let mutableParagraphStyle = NSMutableParagraphStyle()
+		if let paragraphyStyle: NSParagraphStyle = getAttribute(.paragraphStyle) {
+			mutableParagraphStyle.setParagraphStyle(paragraphyStyle)
+		}
+		mutableParagraphStyle[keyPath: keyPath] = value
+		setAttribute(.paragraphStyle, value: mutableParagraphStyle)
 	}
 }
