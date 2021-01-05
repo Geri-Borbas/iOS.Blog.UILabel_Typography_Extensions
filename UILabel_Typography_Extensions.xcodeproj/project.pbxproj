@@ -11,6 +11,7 @@
 		554AF31825961B6200A23E41 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 554AF31725961B6200A23E41 /* README.md */; };
 		55653BE625A36E0300678FD9 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34F25A0B32D00E7F48B /* NSAttributedString+Extensions.swift */; };
 		559795E525A259E400A757A3 /* UIColor+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559795E425A259E400A757A3 /* UIColor+Styles.swift */; };
+		559FB34E25A4B1A200CE795D /* LineHeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */; };
 		55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236A125912BBE0007BC69 /* AppDelegate.swift */; };
 		55F236A425912BBE0007BC69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236A325912BBE0007BC69 /* SceneDelegate.swift */; };
 		55F236A825912BC30007BC69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55F236A725912BC30007BC69 /* Assets.xcassets */; };
@@ -32,6 +33,7 @@
 		551B425E259BCE40001310A9 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		554AF31725961B6200A23E41 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		559795E425A259E400A757A3 /* UIColor+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Styles.swift"; sourceTree = "<group>"; };
+		559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineHeightViewController.swift; sourceTree = "<group>"; };
 		55F2369E25912BBE0007BC69 /* UILabel_Typography_Extensions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UILabel_Typography_Extensions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F236A125912BBE0007BC69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55F236A325912BBE0007BC69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				55F236B625912BF20007BC69 /* ViewController.swift */,
 				55F7E34725A0AD7F00E7F48B /* AttributesViewController.swift */,
 				55F7E34325A0AA5E00E7F48B /* GlyphViewController.swift */,
+				559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */,
 				55F7E34025A0A91E00E7F48B /* LoremIpsumViewController.swift */,
 				55F236A725912BC30007BC69 /* Assets.xcassets */,
 				55F236AC25912BC30007BC69 /* LaunchScreen.storyboard */,
@@ -210,6 +213,7 @@
 				55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */,
 				55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */,
 				55F236CA25912E690007BC69 /* PreviewView.swift in Sources */,
+				559FB34E25A4B1A200CE795D /* LineHeightViewController.swift in Sources */,
 				55F7E33225A03D8300E7F48B /* UILabel+Observer.swift in Sources */,
 				55F236BB25912C430007BC69 /* Withable.swift in Sources */,
 				55F7E34425A0AA5E00E7F48B /* GlyphViewController.swift in Sources */,

@@ -87,6 +87,8 @@ class ViewController: UIViewController {
 				.with(title: "Lorem Ipsum", target: self, selector: #selector(didTapLoremIpsumButton)),
 			UIButton()
 				.with(title: "Glyph", target: self, selector: #selector(didTapGlyphButton)),
+			UIButton()
+				.with(title: "Line Height", target: self, selector: #selector(didTapLineHeightButton)),
 			UIView
 				.spacer
 				.inspect
@@ -117,6 +119,10 @@ class ViewController: UIViewController {
 	
 	@objc func didTapLoremIpsumButton() {
 		self.present(LoremIpsumViewController(), animated: true)
+	}
+	
+	@objc func didTapLineHeightButton() {
+		self.present(LineHeightViewController(), animated: true)
 	}
 	
     override func viewDidLoad() {
