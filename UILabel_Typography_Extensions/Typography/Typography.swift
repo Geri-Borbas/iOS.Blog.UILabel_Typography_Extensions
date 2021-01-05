@@ -28,28 +28,50 @@
 import UIKit
 
 
-public protocol TypographyExtensions {
+public protocol TypographyExtensions: UILabel {
 	
-	/// The line height for the reciever (setter lays out and sets `attributedText`).
+	/// Set the line height (points) on the underlying `NSAttributedString` (with
+	/// vertical centering). The provided `lineHeight` value is set to the
+	/// `minimumLineHeight` and `maximumLineHeight` property of the `paragraphStyle`
+	/// attribute.
+	///
+	/// If the label has no `attributedText` populated yet, a new one will be created
+	/// with the corresponding attributes (otherwise the existing `attributedText`
+	/// will be mutated). In order to preserve consistent `baselineOffset` behavior,
+	/// the `attributedText` property gets updated whenever the `text` property of
+	/// the label changes.
 	var lineHeight: CGFloat? { get set }
 	
-	/// The letter spacing (kerning) for the reciever (setter lays out and sets `attributedText`).
+	/// Set the letter spacing (kerning) on the underlying `NSAttributedString`.
+	///
+	/// If the label has no `attributedText` populated yet, a new one will be created
+	/// with the corresponding attributes (otherwise the existing `attributedText`
+	/// will be mutated).
 	var letterSpacing: CGFloat? { get set }
 	
-	/// The underline style for the reciever (setter lays out and sets `attributedText`).
+	/// Set the underline style on the underlying `NSAttributedString`.
+	///
+	/// If the label has no `attributedText` populated yet, a new one will be created
+	/// with the corresponding attributes (otherwise the existing `attributedText`
+	/// will be mutated).
 	var underline: NSUnderlineStyle? { get set }
 	
-	/// The strikethrough style for the reciever (setter lays out and sets `attributedText`).
+	/// Set the strikethrough style on the underlying `NSAttributedString`.
+	///
+	/// If the label has no `attributedText` populated yet, a new one will be created
+	/// with the corresponding attributes (otherwise the existing `attributedText`
+	/// will be mutated).
 	var strikethrough: NSUnderlineStyle? { get set }
+	
+	/// If this value is set to `true`, the label will add a sublayer containing
+	/// a typographic grid (updated on `layoutSubviews`).
+	var showGrid: Bool { get set }
 	
 	/// The leading image for the reciever (setter lays out and sets `attributedText`).
 	var leadingImage: Typography.Image? { get set }
 	
 	/// The trailing image for the reciever (setter lays out and sets `attributedText`).
 	var trailingImage: Typography.Image? { get set }
-	
-	/// Show typographic grid.
-	var showGrid: Bool { get set }
 }
 
 

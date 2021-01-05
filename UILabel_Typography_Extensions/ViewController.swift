@@ -68,41 +68,25 @@ class ViewController: UIViewController {
 			$0.numberOfLines = 0
 			$0.showGrid = true
 			$0.text = loremIpsum
-			
-			// Line height.
-			let lineHeight = CGFloat(87)
-			let baselineOffset = (lineHeight - $0.font.lineHeight) / 2.0 / 2.0
-			$0.attributedText = NSAttributedString(
-				string: loremIpsum,
-				attributes: [
-					.baselineOffset : baselineOffset,
-					.paragraphStyle : NSMutableParagraphStyle().with {
-						$0.minimumLineHeight = lineHeight
-						$0.maximumLineHeight = lineHeight
-					}
-				])
-
-			// 🔑
-			$0.observeIfNeeded()
+			$0.lineHeight = CGFloat(87)
 			
 		}.inspect
 	
 	lazy var body = UIStackView()
 		.vertical(spacing: 10)
 		.views(
-			label_1.inspect,
-			UIButton()
-				.with(title: "Change Text", target: self, selector: #selector(didTapChangeTextButton))
+			label_1
+				.inspect,
+			label_2
 				.inspect,
 			UIButton()
-				.with(title: "Attributes", target: self, selector: #selector(didTapAttributesButton))
-				.inspect,
+				.with(title: "Change Text", target: self, selector: #selector(didTapChangeTextButton)),
 			UIButton()
-				.with(title: "Lorem Ipsum", target: self, selector: #selector(didTapLoremIpsumButton))
-				.inspect,
+				.with(title: "Attributes", target: self, selector: #selector(didTapAttributesButton)),
 			UIButton()
-				.with(title: "Glyph", target: self, selector: #selector(didTapGlyphButton))
-				.inspect,
+				.with(title: "Lorem Ipsum", target: self, selector: #selector(didTapLoremIpsumButton)),
+			UIButton()
+				.with(title: "Glyph", target: self, selector: #selector(didTapGlyphButton)),
 			UIView
 				.spacer
 				.inspect
@@ -145,9 +129,13 @@ class ViewController: UIViewController {
 		)
 		
 		// 🔑
-//		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//			self.label_1.text = self.label_1.text
-//		}
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+			self.label_1.text = self.label_1.text
+			self.label_2.text = self.label_2.text
+			
+			print(self.label_1.lineHeight)
+			print(self.label_2.lineHeight)
+		}
     }
 }
 
@@ -173,15 +161,18 @@ fileprivate extension UIButton {
 	
 	var withButtonStyle: Self {
 		with {
-			$0.titleLabel?.textColor = .label
-			$0.titleLabel?.backgroundColor = .cyan
+			$0.titleLabel?.textColor = .systemBackground
+			$0.titleLabel?.backgroundColor = .systemBlue
 			$0.titleLabel?.letterSpacing = 5
 			$0.titleLabel?.lineHeight = 50
+			$0.titleLabel?.textAlignment = .center
 			$0.titleLabel?.lineBreakMode = .byTruncatingMiddle
 			$0.titleLabel?.pin(to: $0, insets: UIEdgeInsets.zero)
 			_ = $0.titleLabel?.withImages
-			$0.setTitleColor(.label, for: .normal)
+			$0.setTitleColor(.systemBackground, for: .normal)
 			$0.setAttributedTitle($0.titleLabel?.attributedText, for: .normal)
+			$0.layer.cornerRadius = 5
+			$0.clipsToBounds = true
 		}
 	}
 	

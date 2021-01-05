@@ -29,30 +29,30 @@ import UIKit
 
 extension UILabel {
 	
+	fileprivate typealias TextObserver = Observer<UILabel, String?>
+	
 	fileprivate struct Keys {
 		static var observer: UInt8 = 0
 	}
 	
-	var observer: Observer? {
+	fileprivate var observer: TextObserver? {
 		get {
-			objc_getAssociatedObject(self, &Keys.observer) as? Observer
+			objc_getAssociatedObject(self, &Keys.observer) as? TextObserver
 		}
 		set {
 			objc_setAssociatedObject(self, &Keys.observer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 		}
 	}
-
+	
 	func observeIfNeeded() {
 		guard observer == nil else {
 			return
 		}
 		
-		observer = Observer(
+		observer = TextObserver(
 			for: self,
-			onTextChange: { [weak self] text in
-				
-				/// This is needed every time after the `text` property updated
-				/// in order to render a consistent baseline offset.
+			keyPath: \.text,
+			onChange: { [weak self] _ in
 				if let attributedText = self?.attributedText {
 					self?.attributedText = attributedText
 				}
@@ -62,24 +62,24 @@ extension UILabel {
 }
 
 
-class Observer: NSObject {
+class Observer<ObjectType: NSObject, ValueType>: NSObject {
 	
-	typealias TextChangeAction = (_ text: String?) -> Void
-	let onTextChange: TextChangeAction
+	typealias OnChangeAction = (_ value: ValueType?) -> Void
+	let onChange: OnChangeAction
 	private var observer: NSKeyValueObservation?
 	
-	init(for label: UILabel, onTextChange: @escaping TextChangeAction) {
-		self.onTextChange = onTextChange
+	init(for object: ObjectType, keyPath: KeyPath<ObjectType, ValueType>, onChange: @escaping OnChangeAction) {
+		self.onChange = onChange
 		super.init()
-		observe(label)
+		observe(object, keyPath: keyPath)
 	}
 	
-	func observe(_ label: UILabel) {
-		observer = label.observe(
-			\.text,
+	func observe(_ object: ObjectType, keyPath: KeyPath<ObjectType, ValueType>) {
+		observer = object.observe(
+			keyPath,
 			options:  [.new, .old],
 			changeHandler: { [weak self] _, change in
-				self?.onTextChange(change.newValue ?? nil)
+				self?.onChange(change.newValue ?? nil)
 			}
 		)
 	}

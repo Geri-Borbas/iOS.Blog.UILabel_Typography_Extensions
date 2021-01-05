@@ -1,5 +1,5 @@
 //
-//  UILabel+Empty.swift
+//  UILabel+Typograpy.swift
 //  UILabel_Typography_Extensions
 //
 //  Copyright © 2020. Geri Borbás. All rights reserved.
@@ -24,15 +24,21 @@
 //  SOFTWARE.
 //
 
-import Foundation
 import UIKit
 
 
 extension UILabel: TypographyExtensions {
 	
 	public var lineHeight: CGFloat? {
-		get { nil }
-		set { }
+		get { paragraphStyle?.maximumLineHeight }
+		set {
+			let lineHeight = newValue ?? font.lineHeight
+			let baselineOffset = (lineHeight - font.lineHeight) / 2.0 / 2.0
+			addAttribute(.baselineOffset, value: baselineOffset)
+			setParagraphStyleProperty(lineHeight, for: \.minimumLineHeight)
+			setParagraphStyleProperty(lineHeight, for: \.maximumLineHeight)
+			observeIfNeeded()
+		}
 	}
 	
 	public var letterSpacing: CGFloat? {
@@ -64,7 +70,7 @@ extension UILabel: TypographyExtensions {
 
 extension UILabel {
 	
-	// MARK: Get attributes
+	// MARK: Get Attributes
 	
 	fileprivate var attributes: [NSAttributedString.Key : Any]? {
 		get {
@@ -76,12 +82,16 @@ extension UILabel {
 		}
 	}
 	
-	func getAttribute<AttributeType>(_ key: NSAttributedString.Key) -> AttributeType? {
+	fileprivate func getAttribute<AttributeType>(
+		_ key: NSAttributedString.Key
+	) -> AttributeType? where AttributeType: Any {
 		print("getAttribute(\(key))")
 		return attributes?[key] as? AttributeType
 	}
 	
-	func getAttribute<AttributeType>(_ key: NSAttributedString.Key) -> AttributeType? where AttributeType: OptionSet {
+	fileprivate func getAttribute<AttributeType>(
+		_ key: NSAttributedString.Key
+	) -> AttributeType? where AttributeType: OptionSet {
 		print("getAttribute(\(key))")
 		if let attribute = attributes?[key] as? AttributeType.RawValue {
 			return .init(rawValue: attribute)
@@ -90,9 +100,12 @@ extension UILabel {
 		}
 	}
 	
-	// MARK: Set attributes
+	// MARK: Set Attributes
 	
-	func setAttribute<AttributeType>(_ key: NSAttributedString.Key, value: AttributeType?) where AttributeType: Any  {
+	fileprivate func setAttribute<AttributeType>(
+		_ key: NSAttributedString.Key,
+		value: AttributeType?
+	) where AttributeType: Any  {
 		if let value = value {
 			addAttribute(key, value: value)
 		} else {
@@ -100,7 +113,10 @@ extension UILabel {
 		}
 	}
 	
-	func setAttribute<AttributeType>(_ key: NSAttributedString.Key, value: AttributeType?) where AttributeType: OptionSet  {
+	fileprivate func setAttribute<AttributeType>(
+		_ key: NSAttributedString.Key,
+		value: AttributeType?
+	) where AttributeType: OptionSet  {
 		if let value = value {
 			addAttribute(key, value: value.rawValue)
 		} else {
@@ -108,18 +124,18 @@ extension UILabel {
 		}
 	}
 	
-	func addAttribute(_ key: NSAttributedString.Key, value: Any) {
+	fileprivate func addAttribute(_ key: NSAttributedString.Key, value: Any) {
 		print("addAttribute(\(key), value: \(value)")
 		if let attributedText = attributedText {
 			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
 			mutableAttributedText.addAttribute(key, value: value, range: attributedText.entireRange)
 			self.attributedText = mutableAttributedText
 		} else {
-			self.attributedText = NSAttributedString(string: text ?? "", attributes: [ key: value ])
+			self.attributedText = NSAttributedString(string: text ?? "", attributes: attributes)
 		}
 	}
 	
-	func removeAttribute(_ key: NSAttributedString.Key) {
+	fileprivate func removeAttribute(_ key: NSAttributedString.Key) {
 		print("removeAttribute(\(key)")
 		if let attributedText = attributedText {
 			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
@@ -128,11 +144,18 @@ extension UILabel {
 		}
 	}
 	
-	// MARK: Set paragraph style properties
+	// MARK: Set Paragraph Style Properties
 	
-	func setParagraphStyleProperty<ValueType>(_ value: ValueType, for keyPath: ReferenceWritableKeyPath<NSMutableParagraphStyle, ValueType>) {
+	var paragraphStyle: NSParagraphStyle? {
+		getAttribute(.paragraphStyle)
+	}
+	
+	fileprivate func setParagraphStyleProperty<ValueType>(
+		_ value: ValueType,
+		for keyPath: ReferenceWritableKeyPath<NSMutableParagraphStyle, ValueType>
+	) {
 		let mutableParagraphStyle = NSMutableParagraphStyle()
-		if let paragraphyStyle: NSParagraphStyle = getAttribute(.paragraphStyle) {
+		if let paragraphyStyle = paragraphStyle {
 			mutableParagraphStyle.setParagraphStyle(paragraphyStyle)
 		}
 		mutableParagraphStyle[keyPath: keyPath] = value

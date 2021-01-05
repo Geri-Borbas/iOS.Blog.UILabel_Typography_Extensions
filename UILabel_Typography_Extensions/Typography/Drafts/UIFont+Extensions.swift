@@ -63,7 +63,7 @@ extension UIFont {
 	}
 }
 
-extension Double {
+fileprivate extension Double {
 	
 	var decimalPlaces: Int {
 		let decimals = String(self).split(separator: ".")[1]
@@ -71,7 +71,7 @@ extension Double {
 	}
 }
 
-extension CGFloat {
+fileprivate extension CGFloat {
 	
 	var decimalPlaces: Int {
 		Double(self).decimalPlaces

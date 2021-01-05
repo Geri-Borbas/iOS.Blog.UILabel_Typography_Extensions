@@ -151,11 +151,7 @@ extension UILabel {
 
 
 fileprivate extension UILabel {
-	
-	var paragraphStyle: NSParagraphStyle? {
-		attributedText?.attribute(NSAttributedString.Key.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle
-	}
-	
+		
 	var baselineOffset: CGFloat {
 		guard let lineHeight = paragraphStyle?.maximumLineHeight,
 			  lineHeight != 0.0 else {

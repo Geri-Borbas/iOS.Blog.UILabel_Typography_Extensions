@@ -1,5 +1,5 @@
 # UILabel Typography Extensions 📐
-Set line height, letter spacing (and more) on `UILabel`.
+Set line height, letter spacing (and more) directly on `UILabel`.
 
 ```Swift
 let label = UILabel()
@@ -15,7 +15,9 @@ label.strikethrough = .patternDash
 
 A single extension on `UILabel` that adds some typographic property (see above) using [**Objective-C Runtime**] (for stored properties on a Swift extension), [`NSAttributedString`] (for manage typographic properties), and [`NSKeyValueObservation`] (to be able to use the regular `text` property to manage text content).
 
-> 🚧  **Work in progress**. A complemetary blog post (with a corresponding Figma file), and more preview/testing is underway. Also I have high hopes to add leading and trailing image feature as well, so stay tuned.
+See the complementary article at [**UILabel line height, letter spacing and more** UILabel typography extensions].
+
+> 🚧  **Work in progress**. I have high hopes to add leading and trailing image feature, as well as upport for `UIButton`.
 
 ## License
 
@@ -24,3 +26,4 @@ A single extension on `UILabel` that adds some typographic property (see above) 
 [**Objective-C Runtime**]: https://developer.apple.com/documentation/objectivec/objective-c_runtime
 [`NSAttributedString`]: https://developer.apple.com/documentation/foundation/nsattributedstring
 [`NSKeyValueObservation`]: https://developer.apple.com/documentation/foundation/nskeyvalueobservation
+[**UILabel line height, letter spacing and more** UILabel typography extensions]: http://blog.eppz.eu/uilabel-line-height-letter-spacing-and-more-uilabel-typography-extensions/

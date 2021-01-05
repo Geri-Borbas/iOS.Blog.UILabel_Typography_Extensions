@@ -70,6 +70,7 @@ class AttributesViewController: UIViewController {
 				.with {
 					$0.text = "Line Height / Recolored"
 					$0.textColor = .systemGreen
+					$0.backgroundColor = .gray
 					$0.layer.compositingFilter = "multiplyBlendMode"
 					$0.showGrid = true
 				 }
