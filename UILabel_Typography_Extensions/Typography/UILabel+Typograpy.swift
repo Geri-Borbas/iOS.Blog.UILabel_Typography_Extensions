@@ -73,21 +73,33 @@ extension UILabel: TypographyExtensions {
 	}
 }
 
-
 extension UILabel {
 
-    static private var attributesForEmptyString: [UILabel: [NSAttributedString.Key: Any]] = [:]
+    // MARK: Stored properties
+
+    private enum Keys {
+        static var attributesForEmptyString: UInt8 = 0
+    }
+
+    private var attributesForEmptyString: [NSAttributedString.Key: Any]? {
+        get {
+            objc_getAssociatedObject(self, &Keys.attributesForEmptyString) as? [NSAttributedString.Key: Any]
+        }
+        set {
+            objc_setAssociatedObject(self, &Keys.attributesForEmptyString, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
 
 	// MARK: Get Attributes
 	
     fileprivate var attributes: [NSAttributedString.Key: Any]? {
         get {
             guard let attributedText = attributedText else { return nil }
-            guard attributedText.length > 0 else { return UILabel.attributesForEmptyString[self] }
-            if let attributesForEmptyString = UILabel.attributesForEmptyString[self] {
+            guard attributedText.length > 0 else { return attributesForEmptyString }
+            if let attributesForEmptyString = self.attributesForEmptyString {
                 let textAlignment = self.textAlignment
                 let attributedText = NSAttributedString(string: attributedText.string, attributes: attributesForEmptyString)
-                UILabel.attributesForEmptyString[self] = nil
+                self.attributesForEmptyString = nil
                 self.attributedText = attributedText
                 self.textAlignment = textAlignment
             }
@@ -142,10 +154,10 @@ extension UILabel {
         let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
 
         if mutableAttributedText.length == 0 {
-            if UILabel.attributesForEmptyString[self] == nil {
-                UILabel.attributesForEmptyString[self] = [key: value]
+            if attributesForEmptyString == nil {
+                attributesForEmptyString = [key: value]
             } else {
-                UILabel.attributesForEmptyString[self]![key] = value
+                attributesForEmptyString![key] = value
             }
         }
 
@@ -155,7 +167,7 @@ extension UILabel {
 	
 	fileprivate func removeAttribute(_ key: NSAttributedString.Key) {
 		print("removeAttribute(\(key)")
-        UILabel.attributesForEmptyString[self]?[key] = nil
+        attributesForEmptyString?[key] = nil
 		if let attributedText = attributedText {
 			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
 			mutableAttributedText.removeAttribute(key, range: attributedText.entireRange)
