@@ -44,7 +44,7 @@ extension UILabel {
 		}
 	}
 	
-	func observeIfNeeded() {
+    func observeTextChange(onChange completion: @escaping ()->()) {
 		guard observer == nil else {
 			return
 		}
@@ -52,11 +52,7 @@ extension UILabel {
 		observer = TextObserver(
 			for: self,
 			keyPath: \.text,
-			onChange: { [weak self] _ in
-				if let attributedText = self?.attributedText {
-					self?.attributedText = attributedText
-				}
-			}
+			onChange:  { _ in completion() }
 		)
 	}
 }

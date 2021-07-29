@@ -1,0 +1,17 @@
+#macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+Build/
+
+# Cocoapods
+Pods
+*.xcworkspace
+
+# Bundler
+vendor
+.bundle
+
+#CocoaPods Keys
+.env

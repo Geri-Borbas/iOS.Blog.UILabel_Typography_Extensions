@@ -20,7 +20,6 @@ class LineHeightViewController: UIViewController {
 		.views(
 			
 			UILabel()
-				.with(text: text)
 				.with {
 					$0.textColor = .label
 					$0.font = UIFont.newYork(ofSize: 1024 / 26.0 / 2.0)
@@ -29,7 +28,8 @@ class LineHeightViewController: UIViewController {
 					$0.showGrid = true
 					$0.underline = .single
 					self.label = $0
-				},
+				}
+                .with(text: text),
 			
 			UISlider()
 				.with {
