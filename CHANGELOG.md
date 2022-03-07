@@ -1,7 +1,7 @@
 #  CHANGELOG
 
 
-* Feature/Empty_Label_Support/0.1.0 - 0.1.1
+* Feature/Empty_Label_Support/0.1.0 - 0.1.2
 
 	+ Added `CHANGELOG.md`
 	+ Reuse `TextObserver.OnChangeAction` in `UILabel` text observer extension

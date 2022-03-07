@@ -44,7 +44,6 @@ extension UILabel {
 		}
 	}
 	
-	
 	func onTextChange(onChange completion: @escaping TextObserver.OnChangeAction) {
 		guard observer == nil else {
 			return
