@@ -31,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		551B425E259BCE40001310A9 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
+		554A2DCF27D67B66008A4AE4 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		554AF31725961B6200A23E41 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		559795E425A259E400A757A3 /* UIColor+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Styles.swift"; sourceTree = "<group>"; };
 		559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineHeightViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				554AF31725961B6200A23E41 /* README.md */,
+				554A2DCF27D67B66008A4AE4 /* CHANGELOG.md */,
 				55F236A025912BBE0007BC69 /* UILabel_Typography_Extensions */,
 				55F2369F25912BBE0007BC69 /* Products */,
 			);
