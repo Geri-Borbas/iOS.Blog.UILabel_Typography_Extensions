@@ -37,7 +37,13 @@ extension UILabel: TypographyExtensions {
 			addAttribute(.baselineOffset, value: baselineOffset)
 			setParagraphStyleProperty(lineHeight, for: \.minimumLineHeight)
 			setParagraphStyleProperty(lineHeight, for: \.maximumLineHeight)
-			observeIfNeeded()
+			observeTextChange { [weak self] in
+                guard let self = self else { return }
+                // This UIKit accessor has side effects to correctly recalculate and display lineHeight, so it needs to be called!
+                _ = self.attributedText
+                // Reload for empty string
+                _ = self.attributes
+            }
 		}
 	}
 	
@@ -67,20 +73,39 @@ extension UILabel: TypographyExtensions {
 	}
 }
 
-
 extension UILabel {
-	
+
+    // MARK: Stored properties
+
+    private enum Keys {
+        static var attributesForEmptyString: UInt8 = 0
+    }
+
+    private var attributesForEmptyString: [NSAttributedString.Key: Any]? {
+        get {
+            objc_getAssociatedObject(self, &Keys.attributesForEmptyString) as? [NSAttributedString.Key: Any]
+        }
+        set {
+            objc_setAssociatedObject(self, &Keys.attributesForEmptyString, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
 	// MARK: Get Attributes
 	
-	fileprivate var attributes: [NSAttributedString.Key : Any]? {
-		get {
-			if let attributedText = attributedText {
-				return attributedText.attributes(at: 0, effectiveRange: nil)
-			} else {
-				return nil
-			}
-		}
-	}
+    fileprivate var attributes: [NSAttributedString.Key: Any]? {
+        get {
+            guard let attributedText = attributedText else { return nil }
+            guard attributedText.length > 0 else { return attributesForEmptyString }
+            if let attributesForEmptyString = self.attributesForEmptyString {
+                let textAlignment = self.textAlignment
+                let attributedText = NSAttributedString(string: attributedText.string, attributes: attributesForEmptyString)
+                self.attributesForEmptyString = nil
+                self.attributedText = attributedText
+                self.textAlignment = textAlignment
+            }
+            return attributedText.attributes(at: 0, effectiveRange: nil)
+        }
+    }
 	
 	fileprivate func getAttribute<AttributeType>(
 		_ key: NSAttributedString.Key
@@ -124,19 +149,25 @@ extension UILabel {
 		}
 	}
 	
-	fileprivate func addAttribute(_ key: NSAttributedString.Key, value: Any) {
-		print("addAttribute(\(key), value: \(value)")
-		if let attributedText = attributedText {
-			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
-			mutableAttributedText.addAttribute(key, value: value, range: attributedText.entireRange)
-			self.attributedText = mutableAttributedText
-		} else {
-			self.attributedText = NSAttributedString(string: text ?? "", attributes: attributes)
-		}
-	}
+    fileprivate func addAttribute(_ key: NSAttributedString.Key, value: Any) {
+        let attributedText = attributedText ?? NSAttributedString(string: text ?? "", attributes: attributes)
+        let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
+
+        if mutableAttributedText.length == 0 {
+            if attributesForEmptyString == nil {
+                attributesForEmptyString = [key: value]
+            } else {
+                attributesForEmptyString![key] = value
+            }
+        }
+
+        mutableAttributedText.addAttribute(key, value: value, range: attributedText.entireRange)
+        self.attributedText = mutableAttributedText
+    }
 	
 	fileprivate func removeAttribute(_ key: NSAttributedString.Key) {
 		print("removeAttribute(\(key)")
+        attributesForEmptyString?[key] = nil
 		if let attributedText = attributedText {
 			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
 			mutableAttributedText.removeAttribute(key, range: attributedText.entireRange)
