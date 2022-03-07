@@ -37,7 +37,7 @@ extension UILabel: TypographyExtensions {
 			addAttribute(.baselineOffset, value: baselineOffset)
 			setParagraphStyleProperty(lineHeight, for: \.minimumLineHeight)
 			setParagraphStyleProperty(lineHeight, for: \.maximumLineHeight)
-			onTextChange { [weak self] in
+			onTextChange { [weak self] _ in
                 guard let self = self else { return }
                 // This UIKit accessor has side effects to correctly recalculate and display lineHeight, so it needs to be called!
                 _ = self.attributedText

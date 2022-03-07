@@ -29,7 +29,7 @@ import UIKit
 
 extension UILabel {
 	
-	fileprivate typealias TextObserver = Observer<UILabel, String?>
+	typealias TextObserver = Observer<UILabel, String?>
 	
 	fileprivate struct Keys {
 		static var observer: UInt8 = 0
@@ -44,7 +44,8 @@ extension UILabel {
 		}
 	}
 	
-    func onTextChange(_ completion: @escaping ()->()) {
+	
+	func onTextChange(onChange completion: @escaping TextObserver.OnChangeAction) {
 		guard observer == nil else {
 			return
 		}
@@ -52,7 +53,7 @@ extension UILabel {
 		observer = TextObserver(
 			for: self,
 			keyPath: \.text,
-			onChange:  { _ in completion() }
+			onChange:  { text in completion(text) }
 		)
 	}
 }
