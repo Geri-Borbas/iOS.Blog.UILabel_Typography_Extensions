@@ -1,10 +1,11 @@
 #  CHANGELOG
 
 
-* Doing
+* Feature/Empty_Label_Support/0.1.7
 
-	+ Mutate `paragraphStyle` attributes at once
-
+	+ Removed unused parameter from `onTextChange()`
+	+ Added `NSMutableParagraphStyle.withProperty()` to mutate paragraph style in place
+	
 * Feature/Empty_Label_Support/0.1.6
 
 	+ Added `NSParagraphStyle.paragraphStyleByAddingProperty` for in-place(ish) mutation

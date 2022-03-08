@@ -44,10 +44,15 @@ extension UILabel: TypographyExtensions {
 			let lineHeight = newValue ?? font.lineHeight
 			let baselineOffset = (lineHeight - font.lineHeight) / 2.0 / 2.0
 			addAttribute(.baselineOffset, value: baselineOffset)
-			addAttribute(.paragraphStyle, value: paragraphStyle.paragraphStyleByAddingProperty(lineHeight, for: \.minimumLineHeight))
-			addAttribute(.paragraphStyle, value: paragraphStyle.paragraphStyleByAddingProperty(lineHeight, for: \.maximumLineHeight))
-			addAttribute(.paragraphStyle, value: paragraphStyle.paragraphStyleByAddingProperty(textAlignment, for: \.alignment))
-			onTextChange { [weak self] _ in
+			addAttribute(
+				.paragraphStyle,
+				value: (paragraphStyle ?? NSParagraphStyle())
+					.mutable
+					.withProperty(lineHeight, for: \.minimumLineHeight)
+					.withProperty(lineHeight, for: \.maximumLineHeight)
+					.withProperty(textAlignment, for: \.alignment)
+			)
+			onTextChange { [weak self] in
 				self?.updateAttributedTextLayout()
             }
 		}
@@ -80,7 +85,11 @@ extension UILabel: TypographyExtensions {
 }
 
 
-extension NSAttributedString {
+fileprivate extension NSAttributedString {
+	
+	var entireRange: NSRange {
+		NSRange(location: 0, length: self.length)
+	}
 	
 	func stringByAddingAttribute(_ key: NSAttributedString.Key, value: Any) -> NSAttributedString {
 		let changedString = NSMutableAttributedString(attributedString: self)
@@ -182,22 +191,23 @@ extension UILabel {
 }
 
 
-extension Optional where Wrapped == NSParagraphStyle {
+extension NSParagraphStyle {
 	
-	func paragraphStyleByAddingProperty<ValueType>(
+	var mutable: NSMutableParagraphStyle {
+		let mutable = NSMutableParagraphStyle()
+		mutable.setParagraphStyle(self)
+		return mutable
+	}
+}
+
+
+extension NSMutableParagraphStyle {
+	
+	func withProperty<ValueType>(
 		_ value: ValueType,
 		for keyPath: ReferenceWritableKeyPath<NSMutableParagraphStyle, ValueType>
-	) -> NSParagraphStyle {
-		switch self {
-		case .none:
-			let newParagraphStyle = NSMutableParagraphStyle()
-			newParagraphStyle[keyPath: keyPath] = value
-			return newParagraphStyle
-		case .some(let wrapped):
-			let changedParagraphStyle = NSMutableParagraphStyle()
-			changedParagraphStyle.setParagraphStyle(wrapped)
-			changedParagraphStyle[keyPath: keyPath] = value
-			return changedParagraphStyle
-		}
+	) -> NSMutableParagraphStyle {
+		self[keyPath: keyPath] = value
+		return self
 	}
 }
