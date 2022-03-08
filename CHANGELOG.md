@@ -1,6 +1,10 @@
 #  CHANGELOG
 
 
+* Feature/Empty_Label_Support/0.1.9
+
+	+ Cleaned up testbed views
+
 * Feature/Empty_Label_Support/0.1.8
 
 	+ Cleanup files and folders
