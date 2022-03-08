@@ -17,7 +17,7 @@ A single extension on `UILabel` that adds some typographic property (see above) 
 
 See the complementary article at [**UILabel line height, letter spacing and more** UILabel typography extensions].
 
-> 🚧  **Work in progress**. I have high hopes to add leading and trailing image feature, as well as upport for `UIButton`.
+> 🚧  **Work in progress**. I have high hopes to add leading and trailing image feature, as well as support for `UIButton`.
 
 ## License
 

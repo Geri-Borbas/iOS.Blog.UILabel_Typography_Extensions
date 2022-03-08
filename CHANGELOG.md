@@ -1,6 +1,10 @@
 #  CHANGELOG
 
 
+* Feature/Empty_Label_Support/0.1.8
+
+	+ Cleanup files and folders
+
 * Feature/Empty_Label_Support/0.1.7
 
 	+ Removed unused parameter from `onTextChange()`

@@ -1,8 +1,8 @@
 //
-//  UIFont+Extensions.swift
+//  UIFont+Inspection.swift
 //  UILabel_Typography_Extensions
 //
-//  Created by Geri Borbás on 29/12/2020.
+//  Created by Geri Borbás on 08/03/2022.
 //
 
 import UIKit
@@ -14,16 +14,6 @@ extension UIFont {
 		Self.familyNames.map {
 			Self.fontNames(forFamilyName: $0).joined(separator: "\n")
 		}.joined(separator: "\n")
-	}
-	
-	static func newYork(ofSize size: CGFloat) -> UIFont {
-		let font: UIFont
-		if let newYork = UIFont.italicSystemFont(ofSize: size).fontDescriptor.withDesign(.serif) {
-			font = UIFont(descriptor: newYork, size: size)
-		} else {
-			font = UIFont.italicSystemFont(ofSize: size)
-		}
-		return font
 	}
 	
 	static func inspectNewYork() {
