@@ -29,6 +29,11 @@ import UIKit
 
 extension UILabel: TypographyExtensions {
 	
+	/// Update attributed string layout due to (unknown) UIKit internals.
+	fileprivate func updateAttributedTextLayout() {
+		_ = self.attributedText
+	}
+	
 	public var lineHeight: CGFloat? {
 		get { paragraphStyle?.maximumLineHeight }
 		set {
@@ -38,10 +43,7 @@ extension UILabel: TypographyExtensions {
 			setParagraphStyleProperty(lineHeight, for: \.minimumLineHeight)
 			setParagraphStyleProperty(lineHeight, for: \.maximumLineHeight)
 			onTextChange { [weak self] _ in
-                // This UIKit accessor has side effects to correctly recalculate and display lineHeight, so it needs to be called!
-                _ = self?.attributedText
-                // Reload for empty string
-                _ = self?.attributes
+				self?.updateAttributedTextLayout()
             }
 		}
 	}
@@ -72,60 +74,84 @@ extension UILabel: TypographyExtensions {
 	}
 }
 
+
+extension NSAttributedString {
+	
+	func stringByAddingAttribute(_ key: NSAttributedString.Key, value: Any) -> NSAttributedString {
+		let changedString = NSMutableAttributedString(attributedString: self)
+		changedString.addAttribute(key, value: value, range: self.entireRange)
+		return changedString
+	}
+	
+	func stringByRemovingAttribute(_ key: NSAttributedString.Key) -> NSAttributedString {
+		let changedString = NSMutableAttributedString(attributedString: self)
+		changedString.removeAttribute(key, range: self.entireRange)
+		return changedString
+	}
+}
+
+
+fileprivate extension UILabel {
+	
+	struct Keys {
+		static var placeholder: UInt8 = 0
+	}
+	
+	/// An attributed string property to cache typography even when the label text is empty.
+	var placeholder: NSAttributedString {
+		get {
+			objc_getAssociatedObject(self, &Keys.placeholder) as? NSAttributedString ?? NSAttributedString(string: "Placeholder")
+		}
+		set {
+			objc_setAssociatedObject(self, &Keys.placeholder, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		}
+	}
+	
+	/// Attributes of `attributedText` (or the cached placeholder string if text is empty).
+	var attributes: [NSAttributedString.Key: Any] {
+		get {
+			if let attributedText = attributedText,
+			   attributedText.length > 0 {
+				return attributedText.attributes(at: 0, effectiveRange: nil)
+			} else {
+				return placeholder.attributes(at: 0, effectiveRange: nil)
+			}
+		}
+	}
+	
+	func addAttribute(_ key: NSAttributedString.Key, value: Any) {
+		attributedText = attributedText?.stringByAddingAttribute(key, value: value)
+		placeholder = placeholder.stringByAddingAttribute(key, value: value)
+	}
+	
+	func removeAttribute(_ key: NSAttributedString.Key) {
+		attributedText = attributedText?.stringByRemovingAttribute(key)
+		placeholder = placeholder.stringByRemovingAttribute(key)
+	}
+}
+
+
 extension UILabel {
-
-    // MARK: Stored properties
-
-    private enum Keys {
-        static var attributesForEmptyString: UInt8 = 0
-    }
-
-    private var attributesForEmptyString: [NSAttributedString.Key: Any]? {
-        get {
-            objc_getAssociatedObject(self, &Keys.attributesForEmptyString) as? [NSAttributedString.Key: Any]
-        }
-        set {
-            objc_setAssociatedObject(self, &Keys.attributesForEmptyString, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-
-	// MARK: Get Attributes
 	
-    fileprivate var attributes: [NSAttributedString.Key: Any]? {
-        get {
-            guard let attributedText = attributedText else { return nil }
-            guard attributedText.length > 0 else { return attributesForEmptyString }
-            if let attributesForEmptyString = self.attributesForEmptyString {
-                let textAlignment = self.textAlignment
-                let attributedText = NSAttributedString(string: attributedText.string, attributes: attributesForEmptyString)
-                self.attributesForEmptyString = nil
-                self.attributedText = attributedText
-                self.textAlignment = textAlignment
-            }
-            return attributedText.attributes(at: 0, effectiveRange: nil)
-        }
-    }
-	
+	/// Get attribute for the given key (if any).
 	fileprivate func getAttribute<AttributeType>(
 		_ key: NSAttributedString.Key
 	) -> AttributeType? where AttributeType: Any {
-		print("getAttribute(\(key))")
-		return attributes?[key] as? AttributeType
+		return attributes[key] as? AttributeType
 	}
 	
+	/// Get `OptionSet` attribute for the given key (if any).
 	fileprivate func getAttribute<AttributeType>(
 		_ key: NSAttributedString.Key
 	) -> AttributeType? where AttributeType: OptionSet {
-		print("getAttribute(\(key))")
-		if let attribute = attributes?[key] as? AttributeType.RawValue {
+		if let attribute = attributes[key] as? AttributeType.RawValue {
 			return .init(rawValue: attribute)
 		} else {
 			return nil
 		}
 	}
 	
-	// MARK: Set Attributes
-	
+	/// Add (or remove) attribute for the given key (if any).
 	fileprivate func setAttribute<AttributeType>(
 		_ key: NSAttributedString.Key,
 		value: AttributeType?
@@ -137,6 +163,7 @@ extension UILabel {
 		}
 	}
 	
+	/// Add (or remove) `OptionSet` attribute for the given key (if any).
 	fileprivate func setAttribute<AttributeType>(
 		_ key: NSAttributedString.Key,
 		value: AttributeType?
@@ -147,34 +174,6 @@ extension UILabel {
 			removeAttribute(key)
 		}
 	}
-	
-    fileprivate func addAttribute(_ key: NSAttributedString.Key, value: Any) {
-        let attributedText = attributedText ?? NSAttributedString(string: text ?? "", attributes: attributes)
-        let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
-
-        if mutableAttributedText.length == 0 {
-            if attributesForEmptyString == nil {
-                attributesForEmptyString = [key: value]
-            } else {
-                attributesForEmptyString![key] = value
-            }
-        }
-
-        mutableAttributedText.addAttribute(key, value: value, range: attributedText.entireRange)
-        self.attributedText = mutableAttributedText
-    }
-	
-	fileprivate func removeAttribute(_ key: NSAttributedString.Key) {
-		print("removeAttribute(\(key)")
-        attributesForEmptyString?[key] = nil
-		if let attributedText = attributedText {
-			let mutableAttributedText = NSMutableAttributedString(attributedString: attributedText)
-			mutableAttributedText.removeAttribute(key, range: attributedText.entireRange)
-			self.attributedText = mutableAttributedText
-		}
-	}
-	
-	// MARK: Set Paragraph Style Properties
 	
 	var paragraphStyle: NSParagraphStyle? {
 		getAttribute(.paragraphStyle)
