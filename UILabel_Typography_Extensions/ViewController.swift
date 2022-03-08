@@ -67,8 +67,11 @@ class ViewController: UIViewController {
 			$0.layer.compositingFilter = "multiplyBlendMode"
 			$0.numberOfLines = 0
 			$0.showGrid = true
-			$0.text = loremIpsum
 			$0.lineHeight = CGFloat(87)
+			$0.textAlignment = .center
+			
+			// Set text after.
+			$0.text = loremIpsum
 			
 		}.inspect
 	
@@ -76,9 +79,6 @@ class ViewController: UIViewController {
 		.vertical(spacing: 10)
 		.views(
 			label_1
-				.with {
-					$0.textAlignment = .right
-				}
 				.inspect,
 			label_2
 				.inspect,
@@ -108,8 +108,8 @@ class ViewController: UIViewController {
 	@objc func didTapChangeTextButton() {
 		if models.isEmpty == false {
 			let model = models.removeFirst()
-			label_1.text = model.text
-			label_1.backgroundColor = .white // model.backgroundColor
+			label_2.text = model.text
+			label_2.backgroundColor = .white // model.backgroundColor
 		}
 	}
 	

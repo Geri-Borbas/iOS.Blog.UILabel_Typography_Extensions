@@ -34,14 +34,19 @@ extension UILabel: TypographyExtensions {
 		_ = self.attributedText
 	}
 	
+	var paragraphStyle: NSParagraphStyle? {
+		getAttribute(.paragraphStyle)
+	}
+	
 	public var lineHeight: CGFloat? {
 		get { paragraphStyle?.maximumLineHeight }
 		set {
 			let lineHeight = newValue ?? font.lineHeight
 			let baselineOffset = (lineHeight - font.lineHeight) / 2.0 / 2.0
 			addAttribute(.baselineOffset, value: baselineOffset)
-			setParagraphStyleProperty(lineHeight, for: \.minimumLineHeight)
-			setParagraphStyleProperty(lineHeight, for: \.maximumLineHeight)
+			addAttribute(.paragraphStyle, value: paragraphStyle.paragraphStyleByAddingProperty(lineHeight, for: \.minimumLineHeight))
+			addAttribute(.paragraphStyle, value: paragraphStyle.paragraphStyleByAddingProperty(lineHeight, for: \.maximumLineHeight))
+			addAttribute(.paragraphStyle, value: paragraphStyle.paragraphStyleByAddingProperty(textAlignment, for: \.alignment))
 			onTextChange { [weak self] _ in
 				self?.updateAttributedTextLayout()
             }
@@ -174,20 +179,25 @@ extension UILabel {
 			removeAttribute(key)
 		}
 	}
+}
+
+
+extension Optional where Wrapped == NSParagraphStyle {
 	
-	var paragraphStyle: NSParagraphStyle? {
-		getAttribute(.paragraphStyle)
-	}
-	
-	fileprivate func setParagraphStyleProperty<ValueType>(
+	func paragraphStyleByAddingProperty<ValueType>(
 		_ value: ValueType,
 		for keyPath: ReferenceWritableKeyPath<NSMutableParagraphStyle, ValueType>
-	) {
-		let mutableParagraphStyle = NSMutableParagraphStyle()
-		if let paragraphyStyle = paragraphStyle {
-			mutableParagraphStyle.setParagraphStyle(paragraphyStyle)
+	) -> NSParagraphStyle {
+		switch self {
+		case .none:
+			let newParagraphStyle = NSMutableParagraphStyle()
+			newParagraphStyle[keyPath: keyPath] = value
+			return newParagraphStyle
+		case .some(let wrapped):
+			let changedParagraphStyle = NSMutableParagraphStyle()
+			changedParagraphStyle.setParagraphStyle(wrapped)
+			changedParagraphStyle[keyPath: keyPath] = value
+			return changedParagraphStyle
 		}
-		mutableParagraphStyle[keyPath: keyPath] = value
-		setAttribute(.paragraphStyle, value: mutableParagraphStyle)
 	}
 }

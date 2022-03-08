@@ -3,8 +3,12 @@
 
 * Doing
 
-	+ Preserve text alignment (and other paragraph styles)
-		+ Mutate `paragraphStyle` attributes similar to text attributes
+	+ Mutate `paragraphStyle` attributes at once
+
+* Feature/Empty_Label_Support/0.1.6
+
+	+ Added `NSParagraphStyle.paragraphStyleByAddingProperty` for in-place(ish) mutation
+	+ Copied text alignment at paragraph style mutation(s)
 
 * Feature/Empty_Label_Support/0.1.5
 
@@ -31,4 +35,3 @@
 
 	+ Initial implementation
 	+ Testbed
-
