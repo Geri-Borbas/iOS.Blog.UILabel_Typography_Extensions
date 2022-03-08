@@ -76,6 +76,9 @@ class ViewController: UIViewController {
 		.vertical(spacing: 10)
 		.views(
 			label_1
+				.with {
+					$0.textAlignment = .right
+				}
 				.inspect,
 			label_2
 				.inspect,
@@ -97,6 +100,7 @@ class ViewController: UIViewController {
 	var models: [(text: String, backgroundColor: UIColor)] = [
 		("Lorem ipsum dolor sit amet.", UIColor.systemBlue.withAlphaComponent(0.3)),
 		("Consectetur adipiscing elit.", UIColor.systemGreen.withAlphaComponent(0.3)),
+		("", UIColor.systemGreen.withAlphaComponent(0.3)),
 		("Sed do eiusmod tempor incididunt ut labore.", UIColor.systemOrange.withAlphaComponent(0.3)),
 		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.3))
 	]
@@ -133,15 +137,6 @@ class ViewController: UIViewController {
 			to: view.safeAreaLayoutGuide,
 			insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
 		)
-		
-		// 🔑
-		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-			self.label_1.text = self.label_1.text
-			self.label_2.text = self.label_2.text
-			
-			print(self.label_1.lineHeight)
-			print(self.label_2.lineHeight)
-		}
     }
 }
 

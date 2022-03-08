@@ -6,6 +6,10 @@
 	+ Preserve text alignment (and other paragraph styles)
 		+ Mutate `paragraphStyle` attributes similar to text attributes
 
+* Feature/Empty_Label_Support/0.1.5
+
+	+ Added empty string ("") and `textAlignment` mutation to testbed
+
 * Feature/Empty_Label_Support/0.1.4
 
 	+ Added `UILabel.placeholder` attributed string to cache typography even when text is empty
