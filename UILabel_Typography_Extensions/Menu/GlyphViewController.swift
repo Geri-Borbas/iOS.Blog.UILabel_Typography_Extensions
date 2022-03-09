@@ -45,7 +45,7 @@ class GlyphViewController: UIViewController {
 						image: UIImage(named: "Star"),
 						size: CGSize(width: width, height: height)
 					)
-					#warning("Implement this behaviour in the layout itself")
+					// TODO: Implement this behaviour in the layout itself
 					// $0.lineHeight = CGFloat(size) // $0.font.lineHeight
 					$0.lineHeight = $0.font.lineHeight
 				}
@@ -57,7 +57,7 @@ class GlyphViewController: UIViewController {
 				.with {
 					// let size = 121.875 + 10
 					let size = 152.75 + 10
-					#warning("Implement this behaviour in the layout itself")
+					// TODO: Implement this behaviour in the layout itself
 					$0.lineHeight = CGFloat(size) // $0.font.lineHeight
 					$0.leadingImage = Typography.Image(
 						image: UIImage(named: "Star"),

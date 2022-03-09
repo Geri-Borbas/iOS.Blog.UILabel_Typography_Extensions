@@ -17,6 +17,7 @@
 		559E70FD27D90D0E00C00AD7 /* PlanetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */; };
 		559FB34E25A4B1A200CE795D /* LineHeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */; };
 		55A3EECE27D7F24C0002193A /* UIFont+Inspection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A3EECD27D7F24C0002193A /* UIFont+Inspection.swift */; };
+		55BB9AD127D9685700599A5E /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BB9AD027D9685700599A5E /* Styles.swift */; };
 		55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236A125912BBE0007BC69 /* AppDelegate.swift */; };
 		55F236A425912BBE0007BC69 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236A325912BBE0007BC69 /* SceneDelegate.swift */; };
 		55F236A825912BC30007BC69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55F236A725912BC30007BC69 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetViewController.swift; sourceTree = "<group>"; };
 		559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineHeightViewController.swift; sourceTree = "<group>"; };
 		55A3EECD27D7F24C0002193A /* UIFont+Inspection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Inspection.swift"; sourceTree = "<group>"; };
+		55BB9AD027D9685700599A5E /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		55F2369E25912BBE0007BC69 /* UILabel_Typography_Extensions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UILabel_Typography_Extensions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F236A125912BBE0007BC69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55F236A325912BBE0007BC69 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */,
+				55BB9AD027D9685700599A5E /* Styles.swift */,
 			);
 			path = Planet;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				5501DB9527D82099009E0FDA /* UIButton+Extensions.swift in Sources */,
 				55F7E34125A0A91E00E7F48B /* LoremIpsumViewController.swift in Sources */,
 				559795E525A259E400A757A3 /* UIColor+Styles.swift in Sources */,
+				55BB9AD127D9685700599A5E /* Styles.swift in Sources */,
 				55F7E34825A0AD7F00E7F48B /* AttributesViewController.swift in Sources */,
 				55F236B725912BF20007BC69 /* MenuViewController.swift in Sources */,
 				55F7E33E25A051FE00E7F48B /* UILabel+Grid.swift in Sources */,

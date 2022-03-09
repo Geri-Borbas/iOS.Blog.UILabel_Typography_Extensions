@@ -4,10 +4,15 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+* Feature/Label_Styles/0.1.2
+
+	+ UI from design specs (label styles, assets, stack)
+	+ `baselineOffset` adjustemt for small line heigh values
 
 * Feature/Label_Styles/0.1.0
 
 	+ Added `PlanetViewController` with labels and (inline) styles
+	+ Renaming, warning cleanup
 
 * 0.9.0
 
