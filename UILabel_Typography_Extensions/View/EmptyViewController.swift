@@ -23,10 +23,10 @@ class EmptyViewController: UIViewController {
 			$0.showGrid = true
 			$0.lineHeight = CGFloat(87)
 			$0.underline = .single
-			$0.textAlignment = .center
 			
 			// Set text after.
 			$0.text = loremIpsum
+			$0.textAlignment = .right
 			
 		}.inspect
 

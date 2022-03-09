@@ -1,7 +1,10 @@
 #  CHANGELOG
 
+* Doing
 
-* Feature/Empty_Label_Support/0.2.0
+	+ (May) lookup baseline reset issue with overflowing text
+
+* Feature/Empty_Label_Support/0.2.0 - 0.2.1
 
 	+ Added `oldText` and `newText` parameters to `onTextChange` observer
 	+ Renamed `placeholder` to `cache`

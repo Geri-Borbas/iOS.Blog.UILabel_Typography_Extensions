@@ -14,7 +14,7 @@ extension UIButton {
 		with {
 			$0.titleLabel?.textColor = .systemBackground
 			$0.titleLabel?.backgroundColor = .systemBlue
-			$0.titleLabel?.letterSpacing = 5
+			$0.titleLabel?.letterSpacing = 2
 			$0.titleLabel?.lineHeight = 50
 			$0.titleLabel?.textAlignment = .center
 			$0.titleLabel?.lineBreakMode = .byTruncatingMiddle
@@ -22,7 +22,7 @@ extension UIButton {
 			_ = $0.titleLabel?.withImages
 			$0.setTitleColor(.systemBackground, for: .normal)
 			$0.setAttributedTitle($0.titleLabel?.attributedText, for: .normal)
-			$0.layer.cornerRadius = 5
+			$0.layer.cornerRadius = 25
 			$0.clipsToBounds = true
 		}
 	}
@@ -32,15 +32,6 @@ extension UIButton {
 			.withButtonStyle
 			.with {
 				$0.setTitle(title, for: .normal)
-			}
-	}
-	
-	func with(title: String, target: Any, selector: Selector) -> Self {
-		self
-			.withButtonStyle
-			.with {
-				$0.setTitle(title, for: .normal)
-				$0.addTarget(target, action: selector, for: .touchUpInside)
 			}
 	}
 }

@@ -36,8 +36,7 @@ class MenuViewController: UIViewController {
 				.with(title: "Manual Label Styling")
 				.onTouchUpInside { [unowned self] in
 					self.present(ManualViewController(), animated: true)
-				}
-			,
+				},
 			UIButton()
 				.with(title: "Empty Label Styling")
 				.onTouchUpInside { [unowned self] in
@@ -80,7 +79,7 @@ class MenuViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		self.present(EmptyViewController(), animated: true)
+		// self.present(EmptyViewController(), animated: true)
 	}
 }
 

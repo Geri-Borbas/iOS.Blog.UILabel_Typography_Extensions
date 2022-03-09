@@ -57,7 +57,7 @@ extension UILabel: TypographyExtensions {
 				.paragraphStyle,
 				value: (paragraphStyle ?? NSParagraphStyle())
 					.mutable
-					.withProperty(textAlignment, for: \.alignment)
+//					 .withProperty(textAlignment, for: \.alignment)
 					.withProperty(lineHeight, for: \.minimumLineHeight)
 					.withProperty(lineHeight, for: \.maximumLineHeight)
 			)
@@ -72,7 +72,9 @@ extension UILabel: TypographyExtensions {
 			if oldText.count == 0,
 			   newText.count > 0,
 			   let newText = newText {
+				let alignment = textAlignment
 				self.attributedText = NSAttributedString(string: newText, attributes: cachedAttributes)
+				self.textAlignment = alignment
 			}
 			
 			// Update attributed string layout due to (unknown) UIKit internals.
