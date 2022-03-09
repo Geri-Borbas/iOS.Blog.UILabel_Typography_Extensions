@@ -10,7 +10,7 @@ import UIKit
 
 class LineHeightViewController: UIViewController {
 	
-	let text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+	let text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 	
 	var label: UILabel!
 	var sliderObserver: Observer<UISlider, Float>!
@@ -20,7 +20,6 @@ class LineHeightViewController: UIViewController {
 		.views(
 			
 			UILabel()
-				.with(text: text)
 				.with {
 					$0.textColor = .label
 					$0.font = UIFont.newYork(ofSize: 1024 / 26.0 / 2.0)
@@ -28,8 +27,10 @@ class LineHeightViewController: UIViewController {
 					$0.numberOfLines = 0
 					$0.showGrid = true
 					$0.underline = .single
+					$0.textAlignment = .center
 					self.label = $0
-				},
+				}
+                .with(text: text),
 			
 			UISlider()
 				.with {

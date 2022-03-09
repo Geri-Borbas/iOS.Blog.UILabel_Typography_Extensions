@@ -20,6 +20,15 @@ class AttributesViewController: UIViewController {
 		.views(
 			
 			UILabel()
+				.with {
+					$0.textColor = .label
+					$0.font = .preferredFont(forTextStyle: .headline)
+					$0.underline = .double
+					$0.showGrid = true
+				}
+				.with(text: "Underline"),
+			
+			UILabel()
 				.with(text: "Default")
 				.with {
 					$0.textColor = .label
@@ -80,7 +89,6 @@ class AttributesViewController: UIViewController {
 				},
 			
 			UILabel()
-				.with(text: "🔠Letter Spacing / Alignment / Line Break Mode")
 				.with {
 					$0.textColor = .systemGray
 					$0.font = .preferredFont(forTextStyle: .body)
@@ -95,7 +103,8 @@ class AttributesViewController: UIViewController {
 				.withImages
 				.with {
 					self.label_4 = $0
-				},
+				}
+				.with(text: "🔠Letter Spacing / Alignment / Line Break Mode"),
 			
 			UIView
 				.spacer
