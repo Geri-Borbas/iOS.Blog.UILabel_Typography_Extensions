@@ -21,12 +21,14 @@ class EmptyViewController: UIViewController {
 			$0.layer.compositingFilter = "multiplyBlendMode"
 			$0.numberOfLines = 0
 			$0.showGrid = true
+			
+			// Alignment before typography.
+			$0.textAlignment = .right
 			$0.lineHeight = CGFloat(87)
 			$0.underline = .single
 			
 			// Set text after.
 			$0.text = loremIpsum
-			$0.textAlignment = .right
 			
 		}.inspect
 

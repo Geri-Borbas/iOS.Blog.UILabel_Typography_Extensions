@@ -57,15 +57,15 @@ extension UILabel: TypographyExtensions {
 				.paragraphStyle,
 				value: (paragraphStyle ?? NSParagraphStyle())
 					.mutable
-//					 .withProperty(textAlignment, for: \.alignment)
+					// .withProperty(textAlignment, for: \.alignment)
 					.withProperty(lineHeight, for: \.minimumLineHeight)
 					.withProperty(lineHeight, for: \.maximumLineHeight)
 			)
-			setupCache()
+			setupAttributeCacheIfNeeded()
 		}
 	}
 	
-	func setupCache() {
+	func setupAttributeCacheIfNeeded() {
 		onTextChange { [unowned self] oldText, newText in
 			
 			// Apply cached attributes (if any) in case text have just changed from empty.
@@ -86,7 +86,7 @@ extension UILabel: TypographyExtensions {
 		get { getAttribute(.kern) }
 		set {
 			setAttribute(.kern, value: newValue)
-			setupCache()
+			setupAttributeCacheIfNeeded()
 		}
 	}
 	
@@ -94,7 +94,7 @@ extension UILabel: TypographyExtensions {
 		get { getAttribute(.underlineStyle) }
 		set {
 			setAttribute(.underlineStyle, value: newValue)
-			setupCache()
+			setupAttributeCacheIfNeeded()
 		}
 	}
 	
@@ -102,7 +102,7 @@ extension UILabel: TypographyExtensions {
 		get { getAttribute(.strikethroughStyle) }
 		set {
 			setAttribute(.strikethroughStyle, value: newValue)
-			setupCache()
+			setupAttributeCacheIfNeeded()
 		}
 	}
 	
@@ -117,6 +117,8 @@ extension UILabel: TypographyExtensions {
 	}
 }
 
+
+// MARK: Attributes (and caching)
 
 fileprivate extension NSAttributedString {
 	
@@ -138,21 +140,19 @@ fileprivate extension NSAttributedString {
 }
 
 
-// MARK: Attributes
-
 fileprivate extension UILabel {
 	
 	struct Keys {
-		static var placeholder: UInt8 = 0
+		static var cache: UInt8 = 0
 	}
 	
 	/// An attributed string property to cache typography even when the label text is empty.
 	var cache: NSAttributedString {
 		get {
-			objc_getAssociatedObject(self, &Keys.placeholder) as? NSAttributedString ?? NSAttributedString(string: "Placeholder")
+			objc_getAssociatedObject(self, &Keys.cache) as? NSAttributedString ?? NSAttributedString(string: "Placeholder")
 		}
 		set {
-			objc_setAssociatedObject(self, &Keys.placeholder, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+			objc_setAssociatedObject(self, &Keys.cache, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 		}
 	}
 	
@@ -185,17 +185,17 @@ fileprivate extension UILabel {
 }
 
 
-extension UILabel {
+fileprivate extension UILabel {
 	
 	/// Get attribute for the given key (if any).
-	fileprivate func getAttribute<AttributeType>(
+	func getAttribute<AttributeType>(
 		_ key: NSAttributedString.Key
 	) -> AttributeType? where AttributeType: Any {
 		return (attributes ?? cachedAttributes)[key] as? AttributeType
 	}
 	
 	/// Get `OptionSet` attribute for the given key (if any).
-	fileprivate func getAttribute<AttributeType>(
+	func getAttribute<AttributeType>(
 		_ key: NSAttributedString.Key
 	) -> AttributeType? where AttributeType: OptionSet {
 		if let attribute = (attributes ?? cachedAttributes)[key] as? AttributeType.RawValue {
@@ -206,7 +206,7 @@ extension UILabel {
 	}
 	
 	/// Add (or remove) attribute for the given key (if any).
-	fileprivate func setAttribute<AttributeType>(
+	func setAttribute<AttributeType>(
 		_ key: NSAttributedString.Key,
 		value: AttributeType?
 	) where AttributeType: Any  {
@@ -218,7 +218,7 @@ extension UILabel {
 	}
 	
 	/// Add (or remove) `OptionSet` attribute for the given key (if any).
-	fileprivate func setAttribute<AttributeType>(
+	 func setAttribute<AttributeType>(
 		_ key: NSAttributedString.Key,
 		value: AttributeType?
 	) where AttributeType: OptionSet  {
@@ -231,7 +231,9 @@ extension UILabel {
 }
 
 
-extension NSParagraphStyle {
+// MARK: Paragraph Style
+
+fileprivate extension NSParagraphStyle {
 	
 	var mutable: NSMutableParagraphStyle {
 		let mutable = NSMutableParagraphStyle()
@@ -241,7 +243,7 @@ extension NSParagraphStyle {
 }
 
 
-extension NSMutableParagraphStyle {
+fileprivate extension NSMutableParagraphStyle {
 	
 	func withProperty<ValueType>(
 		_ value: ValueType,

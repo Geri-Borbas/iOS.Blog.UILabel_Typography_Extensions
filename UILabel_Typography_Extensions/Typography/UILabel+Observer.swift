@@ -45,7 +45,7 @@ extension UILabel {
 		}
 	}
 	
-	func onTextChange(onChange completion: @escaping TextChangeAction) {
+	func onTextChange(_ completion: @escaping TextChangeAction) {
 		guard observer == nil else {
 			return
 		}
@@ -53,7 +53,9 @@ extension UILabel {
 		observer = TextObserver(
 			for: self,
 			keyPath: \.text,
-			onChange: { oldText, newText in completion(oldText ?? nil, newText ?? nil) }
+			onChange: { oldText, newText in
+				completion(oldText ?? nil, newText ?? nil)
+			}
 		)
 	}
 }

@@ -4,6 +4,10 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+* 0.9.0
+
+	+ Cleanup, renamings
+
 * Feature/Empty_Label_Support/0.2.0 - 0.2.1
 
 	+ Added `oldText` and `newText` parameters to `onTextChange` observer
