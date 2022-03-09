@@ -4,6 +4,11 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+
+* Feature/Label_Styles/0.1.0
+
+	+ Added `PlanetViewController` with labels and (inline) styles
+
 * 0.9.0
 
 	+ Cleanup, renamings
