@@ -1,6 +1,13 @@
 #  CHANGELOG
 
 
+* Feature/Empty_Label_Support/0.2.0
+
+	+ Added `oldText` and `newText` parameters to `onTextChange` observer
+	+ Renamed `placeholder` to `cache`
+	+ Apply cached attributes (if any) in case text have just changed from empty on text change
+	+ More testbed cleanup
+
 * Feature/Empty_Label_Support/0.1.9
 
 	+ Cleaned up testbed views

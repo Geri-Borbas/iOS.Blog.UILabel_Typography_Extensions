@@ -22,7 +22,7 @@ class EmptyViewController: UIViewController {
 			$0.numberOfLines = 0
 			$0.showGrid = true
 			$0.lineHeight = CGFloat(87)
-			$0.underline = .double
+			$0.underline = .single
 			$0.textAlignment = .center
 			
 			// Set text after.
@@ -30,11 +30,19 @@ class EmptyViewController: UIViewController {
 			
 		}.inspect
 
-	var models: [(text: String, backgroundColor: UIColor)] = [
+	var models: [(text: String?, backgroundColor: UIColor)] = [
 		("Lorem ipsum dolor sit amet.", UIColor.systemBlue.withAlphaComponent(0.1)),
 		("Consectetur adipiscing elit.", UIColor.systemGreen.withAlphaComponent(0.1)),
 		("", UIColor.clear),
+		(nil, UIColor.clear),
 		("Sed do eiusmod tempor incididunt ut labore.", UIColor.systemOrange.withAlphaComponent(0.1)),
+		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.1)),
+		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.1)),
+		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.1)),
+		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.1)),
+		("", UIColor.clear),
+		("", UIColor.clear),
+		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.1)),
 		("Et dolore magna aliqua.", UIColor.systemIndigo.withAlphaComponent(0.1))
 	]
 	

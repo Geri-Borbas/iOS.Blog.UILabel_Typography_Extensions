@@ -17,7 +17,6 @@ class LoremIpsumViewController: UIViewController {
 		.views(
 			
 			UILabel()
-				.with(text: loremIpsum)
 				.with {
 					$0.textColor = .label
 					$0.font = .preferredFont(forTextStyle: .headline)

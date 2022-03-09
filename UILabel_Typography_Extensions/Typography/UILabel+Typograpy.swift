@@ -25,15 +25,24 @@
 //
 
 import UIKit
+import SwiftUI
+
+
+extension Optional where Wrapped == String {
+	
+	var count: Int {
+		switch self {
+		case .none:
+			return 0
+		case .some(let wrapped):
+			return wrapped.count
+		}
+	}
+}
 
 
 extension UILabel: TypographyExtensions {
-	
-	/// Update attributed string layout due to (unknown) UIKit internals.
-	fileprivate func updateAttributedTextLayout() {
-		_ = self.attributedText
-	}
-	
+		
 	var paragraphStyle: NSParagraphStyle? {
 		getAttribute(.paragraphStyle)
 	}
@@ -48,29 +57,51 @@ extension UILabel: TypographyExtensions {
 				.paragraphStyle,
 				value: (paragraphStyle ?? NSParagraphStyle())
 					.mutable
+					.withProperty(textAlignment, for: \.alignment)
 					.withProperty(lineHeight, for: \.minimumLineHeight)
 					.withProperty(lineHeight, for: \.maximumLineHeight)
-					.withProperty(textAlignment, for: \.alignment)
 			)
-			onTextChange { [weak self] in
-				self?.updateAttributedTextLayout()
-            }
+			setupCache()
+		}
+	}
+	
+	func setupCache() {
+		onTextChange { [unowned self] oldText, newText in
+			
+			// Apply cached attributes (if any) in case text have just changed from empty.
+			if oldText.count == 0,
+			   newText.count > 0,
+			   let newText = newText {
+				self.attributedText = NSAttributedString(string: newText, attributes: cachedAttributes)
+			}
+			
+			// Update attributed string layout due to (unknown) UIKit internals.
+			_ = self.attributedText
 		}
 	}
 	
 	public var letterSpacing: CGFloat? {
 		get { getAttribute(.kern) }
-		set { setAttribute(.kern, value: newValue) }
+		set {
+			setAttribute(.kern, value: newValue)
+			setupCache()
+		}
 	}
 	
 	public var underline: NSUnderlineStyle? {
 		get { getAttribute(.underlineStyle) }
-		set { setAttribute(.underlineStyle, value: newValue) }
+		set {
+			setAttribute(.underlineStyle, value: newValue)
+			setupCache()
+		}
 	}
 	
 	public var strikethrough: NSUnderlineStyle? {
 		get { getAttribute(.strikethroughStyle) }
-		set { setAttribute(.strikethroughStyle, value: newValue) }
+		set {
+			setAttribute(.strikethroughStyle, value: newValue)
+			setupCache()
+		}
 	}
 	
 	public var leadingImage: Typography.Image? {
@@ -105,6 +136,8 @@ fileprivate extension NSAttributedString {
 }
 
 
+// MARK: Attributes
+
 fileprivate extension UILabel {
 	
 	struct Keys {
@@ -112,7 +145,7 @@ fileprivate extension UILabel {
 	}
 	
 	/// An attributed string property to cache typography even when the label text is empty.
-	var placeholder: NSAttributedString {
+	var cache: NSAttributedString {
 		get {
 			objc_getAssociatedObject(self, &Keys.placeholder) as? NSAttributedString ?? NSAttributedString(string: "Placeholder")
 		}
@@ -121,26 +154,31 @@ fileprivate extension UILabel {
 		}
 	}
 	
-	/// Attributes of `attributedText` (or the cached placeholder string if text is empty).
-	var attributes: [NSAttributedString.Key: Any] {
+	/// Attributes of `attributedText` (if any).
+	var attributes: [NSAttributedString.Key: Any]? {
 		get {
 			if let attributedText = attributedText,
 			   attributedText.length > 0 {
 				return attributedText.attributes(at: 0, effectiveRange: nil)
 			} else {
-				return placeholder.attributes(at: 0, effectiveRange: nil)
+				return nil
 			}
 		}
 	}
 	
+	/// Attributes of `cache`.
+	var cachedAttributes: [NSAttributedString.Key: Any] {
+		cache.attributes(at: 0, effectiveRange: nil)
+	}
+	
 	func addAttribute(_ key: NSAttributedString.Key, value: Any) {
 		attributedText = attributedText?.stringByAddingAttribute(key, value: value)
-		placeholder = placeholder.stringByAddingAttribute(key, value: value)
+		cache = cache.stringByAddingAttribute(key, value: value)
 	}
 	
 	func removeAttribute(_ key: NSAttributedString.Key) {
 		attributedText = attributedText?.stringByRemovingAttribute(key)
-		placeholder = placeholder.stringByRemovingAttribute(key)
+		cache = cache.stringByRemovingAttribute(key)
 	}
 }
 
@@ -151,14 +189,14 @@ extension UILabel {
 	fileprivate func getAttribute<AttributeType>(
 		_ key: NSAttributedString.Key
 	) -> AttributeType? where AttributeType: Any {
-		return attributes[key] as? AttributeType
+		return (attributes ?? cachedAttributes)[key] as? AttributeType
 	}
 	
 	/// Get `OptionSet` attribute for the given key (if any).
 	fileprivate func getAttribute<AttributeType>(
 		_ key: NSAttributedString.Key
 	) -> AttributeType? where AttributeType: OptionSet {
-		if let attribute = attributes[key] as? AttributeType.RawValue {
+		if let attribute = (attributes ?? cachedAttributes)[key] as? AttributeType.RawValue {
 			return .init(rawValue: attribute)
 		} else {
 			return nil

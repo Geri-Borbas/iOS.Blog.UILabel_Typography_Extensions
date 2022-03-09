@@ -30,6 +30,7 @@ import UIKit
 extension UILabel {
 	
 	typealias TextObserver = Observer<UILabel, String?>
+	typealias TextChangeAction = (_ oldValue: String?, _ newValue: String?) -> Void
 	
 	fileprivate struct Keys {
 		static var observer: UInt8 = 0
@@ -44,7 +45,7 @@ extension UILabel {
 		}
 	}
 	
-	func onTextChange(onChange completion: @escaping () -> Void) {
+	func onTextChange(onChange completion: @escaping TextChangeAction) {
 		guard observer == nil else {
 			return
 		}
@@ -52,7 +53,7 @@ extension UILabel {
 		observer = TextObserver(
 			for: self,
 			keyPath: \.text,
-			onChange: { text in completion() }
+			onChange: { oldText, newText in completion(oldText ?? nil, newText ?? nil) }
 		)
 	}
 }
@@ -60,11 +61,11 @@ extension UILabel {
 
 class Observer<ObjectType: NSObject, ValueType>: NSObject {
 	
-	typealias OnChangeAction = (_ value: ValueType?) -> Void
-	let onChange: OnChangeAction
+	typealias ChangeAction = (_ oldValue: ValueType?, _ newValue: ValueType?) -> Void
+	let onChange: ChangeAction
 	private var observer: NSKeyValueObservation?
 	
-	init(for object: ObjectType, keyPath: KeyPath<ObjectType, ValueType>, onChange: @escaping OnChangeAction) {
+	init(for object: ObjectType, keyPath: KeyPath<ObjectType, ValueType>, onChange: @escaping ChangeAction) {
 		self.onChange = onChange
 		super.init()
 		observe(object, keyPath: keyPath)
@@ -75,7 +76,7 @@ class Observer<ObjectType: NSObject, ValueType>: NSObject {
 			keyPath,
 			options:  [.new, .old],
 			changeHandler: { [weak self] _, change in
-				self?.onChange(change.newValue ?? nil)
+				self?.onChange(change.oldValue, change.newValue)
 			}
 		)
 	}
