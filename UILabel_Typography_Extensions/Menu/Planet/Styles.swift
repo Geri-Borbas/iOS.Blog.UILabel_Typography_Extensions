@@ -9,6 +9,18 @@ import Foundation
 import UIKit
 
 
+struct UI {
+	
+	static let padding = UIEdgeInsets(top: 25, left: 25, bottom: 25, right: 25)
+	
+	struct StackView {
+		
+		static let spacing = CGFloat(5)
+		static let spacer = CGFloat(20)
+	}
+}
+
+
 extension UIColor {
 	
 	static let background = UIColor(named: "Background") ?? UIColor.clear

@@ -4,6 +4,11 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+* Feature/Label_Styles/0.1.3
+
+	+ Added scroll view to `PlanetViewController`
+	+ Matched inspection border to Figma
+
 * Feature/Label_Styles/0.1.2
 
 	+ UI from design specs (label styles, assets, stack)

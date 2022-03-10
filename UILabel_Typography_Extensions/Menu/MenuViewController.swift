@@ -84,7 +84,10 @@ class MenuViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		self.present(PlanetViewController(), animated: true)
+		
+		self.present(PlanetViewController().with {
+			$0.modalPresentationStyle = .fullScreen
+		}, animated: true)
 	}
 }
 

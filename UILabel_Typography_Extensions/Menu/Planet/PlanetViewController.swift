@@ -11,46 +11,57 @@ import SwiftUI
 
 class PlanetViewController: UIViewController {
 	
-	lazy var heroLabel = UILabel().withHeroStyle
-	lazy var subtitleLabel = UILabel().withSubtitleStyle
-	lazy var image = UIImageView()
-	lazy var introLabel = UILabel().withIntroStyle
-	lazy var titleLabel = UILabel().withTitleStyle
-	lazy var paragraphLabel = UILabel().withParagraphStyle
+	lazy var heroLabel = UILabel().withHeroStyle.inspect
+	lazy var subtitleLabel = UILabel().withSubtitleStyle.inspect
+	lazy var image = UIImageView().inspect
+	lazy var introLabel = UILabel().withIntroStyle.inspect
+	lazy var titleLabel = UILabel().withTitleStyle.inspect
+	lazy var paragraphLabel = UILabel().withParagraphStyle.inspect
 	
-	lazy var body = UIStackView()
-		.vertical(spacing: 5)
+	lazy var stackView = UIStackView()
+		.vertical(spacing: UI.StackView.spacing)
 		.views(
-			heroLabel
-				.inspect,
-			subtitleLabel
-				.inspect,
-			image
-				.inspect,
-			introLabel
-				.inspect,
-			titleLabel
-				.inspect,
+			heroLabel,
+			subtitleLabel,
+			image,
+			introLabel,
+			titleLabel,
 			paragraphLabel
-				.inspect,
-			UIView
-				.spacer
-				.inspect
 		)
 		.with {
-			$0.setCustomSpacing(25, after: introLabel)
-			$0.setCustomSpacing(25, after: titleLabel)
+			$0.setCustomSpacing(20 + 2 * UI.StackView.spacing, after: introLabel)
+			$0.setCustomSpacing(20 + 2 * UI.StackView.spacing, after: titleLabel)
+		}
+	
+	lazy var scrollView = UIScrollView()
+		.with {
+			$0.clipsToBounds = false
 		}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.addSubview(body)
+		
+		// Colors.
 		view.backgroundColor = .background
 		overrideUserInterfaceStyle = .dark
-		body.pin(
+		
+		// Hierarchy.
+		view.addSubview(scrollView)
+		scrollView.addSubview(stackView)
+		scrollView.pin(
 			to: view.safeAreaLayoutGuide,
-			insets: UIEdgeInsets(top: 25, left: 25, bottom: 25, right: 25)
+			insets: .zero
 		)
+		stackView.pin(
+			to: scrollView,
+			insets: UI.padding
+		)
+		
+		// Vertical scrolling.
+		stackView.widthAnchor.constraint(
+			equalTo: scrollView.widthAnchor,
+			constant: -UI.padding.left - UI.padding.right
+		).isActive = true
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
