@@ -33,7 +33,7 @@ class MockupViewController: UIViewController {
 		)
 		.with {
 			$0.setCustomSpacing(30, after: $0.subviews[3])
-			$0.setCustomSpacing(30, after: $0.subviews[5])
+			$0.setCustomSpacing(30, after: $0.subviews[4])
 		}
 	
 	lazy var scrollView = UIScrollView()

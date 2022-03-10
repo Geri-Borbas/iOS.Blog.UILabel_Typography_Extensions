@@ -71,7 +71,7 @@ extension UILabel {
 		self
 			.with {
 				$0.textColor = UI.Color.label
-				$0.font = UIFont(name: "HelveticaNeue-Medium", size: 21)
+				$0.font = UIFont(name: "HelveticaNeue-Bold", size: 21)
 				$0.numberOfLines = 0
 				$0.lineHeight = 30
 				$0.letterSpacing = 21 * 0.10
