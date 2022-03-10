@@ -51,13 +51,13 @@ extension UILabel: TypographyExtensions {
 		get { paragraphStyle?.maximumLineHeight }
 		set {
 			let lineHeight = newValue ?? font.lineHeight
-			let baselineOffset = (lineHeight - font.lineHeight) / 2.0 / 2.0
+			let adjustment = lineHeight > font.lineHeight ? 2.0 : 1.0
+			let baselineOffset = (lineHeight - font.lineHeight) / 2.0 / adjustment
 			addAttribute(.baselineOffset, value: baselineOffset)
 			addAttribute(
 				.paragraphStyle,
 				value: (paragraphStyle ?? NSParagraphStyle())
 					.mutable
-					// .withProperty(textAlignment, for: \.alignment)
 					.withProperty(lineHeight, for: \.minimumLineHeight)
 					.withProperty(lineHeight, for: \.maximumLineHeight)
 			)

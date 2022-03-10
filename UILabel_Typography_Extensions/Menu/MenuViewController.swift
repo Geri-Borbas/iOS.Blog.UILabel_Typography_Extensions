@@ -62,6 +62,11 @@ class MenuViewController: UIViewController {
 				.onTouchUpInside { [unowned self] in
 					self.present(LineHeightViewController(), animated: true)
 				},
+			UIButton()
+				.with(title: "Planet")
+				.onTouchUpInside { [unowned self] in
+					self.present(PlanetViewController(), animated: true)
+				},
 			UIView
 				.spacer
 				.inspect
@@ -79,7 +84,10 @@ class MenuViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		// self.present(EmptyViewController(), animated: true)
+		
+		self.present(PlanetViewController().with {
+			$0.modalPresentationStyle = .fullScreen
+		}, animated: true)
 	}
 }
 

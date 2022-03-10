@@ -120,18 +120,4 @@ class AttributesViewController: UIViewController {
 			insets: UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
 		)
 	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		print("\(label_1.underline)")
-		print("\(label_1.strikethrough)")
-		
-		print("\(label_2.underline)")
-		print("\(label_2.strikethrough)")
-		
-		print("\(label_3.lineHeight)")
-		
-		print("\(label_4.letterSpacing)")
-	}
 }

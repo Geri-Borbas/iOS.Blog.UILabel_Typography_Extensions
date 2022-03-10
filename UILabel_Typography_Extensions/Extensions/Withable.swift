@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - Withable for Objects
 
-public protocol ObjectWithable: class {
+public protocol ObjectWithable: AnyObject {
 	
 	associatedtype T
 	

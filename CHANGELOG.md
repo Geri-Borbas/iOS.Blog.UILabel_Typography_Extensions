@@ -4,6 +4,27 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+* Feature/Label_Styles/0.1.5
+
+	+ Moved constants into `UI`
+	+ Added `MockupViewController`
+	
+
+* Feature/Label_Styles/0.1.3 - 0.1.4
+
+	+ Added scroll view to `PlanetViewController`
+	+ Matched inspection border to Figma
+
+* Feature/Label_Styles/0.1.2
+
+	+ UI from design specs (label styles, assets, stack)
+	+ `baselineOffset` adjustemt for small line heigh values
+
+* Feature/Label_Styles/0.1.0
+
+	+ Added `PlanetViewController` with labels and (inline) styles
+	+ Renaming, warning cleanup
+
 * 0.9.0
 
 	+ Cleanup, renamings
