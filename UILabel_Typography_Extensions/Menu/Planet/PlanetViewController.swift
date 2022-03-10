@@ -11,26 +11,26 @@ import SwiftUI
 
 class PlanetViewController: UIViewController {
 	
-	lazy var heroLabel = UILabel().withHeroStyle.inspect
-	lazy var subtitleLabel = UILabel().withSubtitleStyle.inspect
-	lazy var image = UIImageView().inspect
-	lazy var introLabel = UILabel().withIntroStyle.inspect
-	lazy var titleLabel = UILabel().withTitleStyle.inspect
-	lazy var paragraphLabel = UILabel().withParagraphStyle.inspect
+	lazy var heroLabel = UILabel().withHeroStyle
+	lazy var subtitleLabel = UILabel().withSubtitleStyle
+	lazy var image = UIImageView()
+	lazy var introLabel = UILabel().withIntroStyle
+	lazy var titleLabel = UILabel().withTitleStyle
+	lazy var paragraphLabel = UILabel().withParagraphStyle
 	
 	lazy var stackView = UIStackView()
 		.vertical(spacing: UI.StackView.spacing)
 		.views(
-			heroLabel,
-			subtitleLabel,
-			image,
-			introLabel,
-			titleLabel,
-			paragraphLabel
+			heroLabel.inspect,
+			subtitleLabel.inspect,
+			image.inspect,
+			introLabel.inspect,
+			titleLabel.inspect,
+			paragraphLabel.inspect
 		)
 		.with {
-			$0.setCustomSpacing(20 + 2 * UI.StackView.spacing, after: introLabel)
-			$0.setCustomSpacing(20 + 2 * UI.StackView.spacing, after: titleLabel)
+			$0.setCustomSpacing(UI.StackView.spacer + 2 * UI.StackView.spacing, after: introLabel)
+			$0.setCustomSpacing(UI.StackView.spacer + 2 * UI.StackView.spacing, after: titleLabel)
 		}
 	
 	lazy var scrollView = UIScrollView()
@@ -42,7 +42,7 @@ class PlanetViewController: UIViewController {
 		super.viewDidLoad()
 		
 		// Colors.
-		view.backgroundColor = .background
+		view.backgroundColor = UI.Color.background
 		overrideUserInterfaceStyle = .dark
 		
 		// Hierarchy.
@@ -69,9 +69,9 @@ class PlanetViewController: UIViewController {
 		
 		// Data.
 		heroLabel.text = "Mars"
-		heroLabel.textColor = .mars
+		heroLabel.textColor = UI.Color.mars
 		subtitleLabel.text = "Martian (/ˈmɑːrʃən/)"
-		image.image = .init(named: "Mars")
+		image.image = UI.Asset.mars
 		introLabel.text = "Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System, being larger than only Mercury. In English, Mars carries the name of the Roman god of war and is often referred to as the \"Red Planet\". The latter refers to the effect of the iron oxide prevalent on Mars's surface.".uppercased()
 		titleLabel.text = "History"
 		paragraphLabel.text = """
@@ -85,8 +85,10 @@ class PlanetViewController: UIViewController {
 
 struct PlanetViewController_Previews: PreviewProvider {
 	static var previews: some View {
-		PreviewView(for: PlanetViewController())
-			.environment(\.colorScheme, .dark)
+		Group {
+			PreviewView(for: PlanetViewController())
+				.environment(\.colorScheme, .dark)
 			.edgesIgnoringSafeArea(.all)
+		}
 	}
 }

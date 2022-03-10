@@ -4,7 +4,13 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
-* Feature/Label_Styles/0.1.3
+* Feature/Label_Styles/0.1.5
+
+	+ Moved constants into `UI`
+	+ Added `MockupViewController`
+	
+
+* Feature/Label_Styles/0.1.3 - 0.1.4
 
 	+ Added scroll view to `PlanetViewController`
 	+ Matched inspection border to Figma
