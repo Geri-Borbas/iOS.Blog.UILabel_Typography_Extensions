@@ -68,6 +68,11 @@ class MenuViewController: UIViewController {
 					self.present(MockupViewController(), animated: true)
 				},
 			UIButton()
+				.with(title: "Mars")
+				.onTouchUpInside { [unowned self] in
+					self.present(MarsViewController(), animated: true)
+				},
+			UIButton()
 				.with(title: "Planet")
 				.onTouchUpInside { [unowned self] in
 					self.present(PlanetViewController(), animated: true)
@@ -90,7 +95,7 @@ class MenuViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		self.present(MockupViewController().with {
+		self.present(MarsViewController().with {
 			$0.modalPresentationStyle = .fullScreen
 		}, animated: true)
 	}

@@ -4,11 +4,14 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+* 0.10.0 - 0.11.0
+
+	+ Added `MarsViewController` 
+
 * Feature/Label_Styles/0.1.5
 
 	+ Moved constants into `UI`
 	+ Added `MockupViewController`
-	
 
 * Feature/Label_Styles/0.1.3 - 0.1.4
 

@@ -50,7 +50,6 @@ extension UILabel {
 			.with {
 				$0.textColor = UI.Color.label
 				$0.font = UIFont(name: "HelveticaNeue", size: 20)
-				$0.adjustsFontSizeToFitWidth = false
 				$0.lineHeight = 30
 				$0.letterSpacing = 20 * 0.28
 			}

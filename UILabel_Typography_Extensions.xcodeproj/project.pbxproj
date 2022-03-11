@@ -14,8 +14,9 @@
 		551B425F259BCE40001310A9 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551B425E259BCE40001310A9 /* UIFont+Extensions.swift */; };
 		554AF31825961B6200A23E41 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 554AF31725961B6200A23E41 /* README.md */; };
 		5558DA4627DA1FA900A4A178 /* MockupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5558DA4527DA1FA900A4A178 /* MockupViewController.swift */; };
+		55722E1E27DB6167002DE7DC /* MarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55722E1D27DB6167002DE7DC /* MarsViewController.swift */; };
+		55722E1F27DB63BC002DE7DC /* PlanetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */; };
 		559795E525A259E400A757A3 /* UIColor+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559795E425A259E400A757A3 /* UIColor+Styles.swift */; };
-		559E70FD27D90D0E00C00AD7 /* PlanetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */; };
 		559FB34E25A4B1A200CE795D /* LineHeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */; };
 		55A3EECE27D7F24C0002193A /* UIFont+Inspection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A3EECD27D7F24C0002193A /* UIFont+Inspection.swift */; };
 		55BB9AD127D9685700599A5E /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BB9AD027D9685700599A5E /* Styles.swift */; };
@@ -45,6 +46,7 @@
 		554A2DCF27D67B66008A4AE4 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		554AF31725961B6200A23E41 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5558DA4527DA1FA900A4A178 /* MockupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockupViewController.swift; sourceTree = "<group>"; };
+		55722E1D27DB6167002DE7DC /* MarsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarsViewController.swift; sourceTree = "<group>"; };
 		559795E425A259E400A757A3 /* UIColor+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Styles.swift"; sourceTree = "<group>"; };
 		559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetViewController.swift; sourceTree = "<group>"; };
 		559FB34D25A4B1A200CE795D /* LineHeightViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineHeightViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				5558DA4527DA1FA900A4A178 /* MockupViewController.swift */,
+				55722E1D27DB6167002DE7DC /* MarsViewController.swift */,
 				559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */,
 				55BB9AD027D9685700599A5E /* Styles.swift */,
 			);
@@ -252,6 +255,7 @@
 				55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */,
 				55F236CA25912E690007BC69 /* PreviewView.swift in Sources */,
 				5501DB9327D81EC9009E0FDA /* ManualViewController.swift in Sources */,
+				55722E1F27DB63BC002DE7DC /* PlanetViewController.swift in Sources */,
 				559FB34E25A4B1A200CE795D /* LineHeightViewController.swift in Sources */,
 				5501DB9727D8240E009E0FDA /* UIButton+Styles.swift in Sources */,
 				55F7E33225A03D8300E7F48B /* UILabel+Observer.swift in Sources */,
@@ -261,10 +265,10 @@
 				55A3EECE27D7F24C0002193A /* UIFont+Inspection.swift in Sources */,
 				55F236A425912BBE0007BC69 /* SceneDelegate.swift in Sources */,
 				551B425F259BCE40001310A9 /* UIFont+Extensions.swift in Sources */,
-				559E70FD27D90D0E00C00AD7 /* PlanetViewController.swift in Sources */,
 				5501DB9527D82099009E0FDA /* UIButton+Extensions.swift in Sources */,
 				55F7E34125A0A91E00E7F48B /* LoremIpsumViewController.swift in Sources */,
 				559795E525A259E400A757A3 /* UIColor+Styles.swift in Sources */,
+				55722E1E27DB6167002DE7DC /* MarsViewController.swift in Sources */,
 				55BB9AD127D9685700599A5E /* Styles.swift in Sources */,
 				5558DA4627DA1FA900A4A178 /* MockupViewController.swift in Sources */,
 				55F7E34825A0AD7F00E7F48B /* AttributesViewController.swift in Sources */,
