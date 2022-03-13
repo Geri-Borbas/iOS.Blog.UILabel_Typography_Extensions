@@ -4,6 +4,10 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+* 0.12.0
+
+	+ Update `README.md`
+
 * 0.10.0 - 0.11.0
 
 	+ Added `MarsViewController` 

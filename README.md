@@ -1,23 +1,34 @@
 # UILabel Typography Extensions 📐
-Set line height, letter spacing (and more) directly on `UILabel`.
+Set `UILabel` line height, letter spacing (and more).
 
 ```Swift
-let label = UILabel()
-label.text = "Hello World!"
-label.textColor = .label
-label.font = .preferredFont(forTextStyle: .largeTitle)
-// 🎉
-label.lineHeight = 100
-label.letterSpacing = 10
-label.underline = .double
-label.strikethrough = .patternDash
+let headerLabel = UILabel()
+headerLabel.text = "Mars"
+headerLabel.textColor = label
+headerLabel.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 100)
+headerLabel.lineHeight = 80
+headerLabel.letterSpacing = 100 * -0.02
 ```
 
-A single extension on `UILabel` that adds some typographic property (see above) using [**Objective-C Runtime**] (for stored properties on a Swift extension), [`NSAttributedString`] (for manage typographic properties), and [`NSKeyValueObservation`] (to be able to use the regular `text` property to manage text content).
+<p align="center"><img src="UILabel_Typography_Extensions/Documentation/UlLabel_Line_Height_Letter_Spacing_Extension.png" width="900"></p>
 
 See the complementary article at [**UILabel line height, letter spacing and more** UILabel typography extensions].
 
-> 🚧  **Work in progress**. I have high hopes to add leading and trailing image feature, as well as support for `UIButton`.
+<p align="center"><img src="UILabel_Typography_Extensions/Documentation/UILabel_Line_Height_Simulator_Figma_Overlay.png" width="900"></p>
+
+## How it works
+
+It is an extension on `UILabel` that adds some typographic properties using [**Objective-C Runtime**] (for stored properties on a Swift extension), [`NSAttributedString`] (for manage typographic properties), and [`NSKeyValueObservation`] (to be able to use the regular `text` property to manage text content).
+
+<p align="center"><img src="UILabel_Typography_Extensions/Documentation/UILabel_Line_Height_NSAttributedString_BaselineOffset.png" width="900"></p>
+
+It also takes care of `baselineOffset` values to keep the text content in the vertical center (right). By default, :NSAttributedString: sticks multiline label content to the top of the container view (left), which makes it hard to 
+match the UI with the design specifications.
+
+<p align="center"><img src="UILabel_Typography_Extensions/Documentation/UILabel_Line_Height_Xcode_Figma.png" width="900"></p>
+
+Using this extension you can build screens that 100% match design specifications. More on that in the article at [**UILabel line height, letter spacing and more** UILabel typography extensions].
+
 
 ## License
 
