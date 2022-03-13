@@ -22,7 +22,7 @@ It is an extension on `UILabel` that adds some typographic properties using [**O
 
 <p align="center"><img src="Documentation/UILabel_Line_Height_NSAttributedString_BaselineOffset.png" width="900"></p>
 
-It also takes care of `baselineOffset` values to keep the text content in the vertical center (right). By default, :NSAttributedString: sticks multiline label content to the top of the container view (left), which makes it hard to 
+It also takes care of `baselineOffset` values to keep the text content in the vertical center (right). By default, `NSAttributedString` sticks multiline label content to the top of the container view (left), which makes it hard to 
 match the UI with the design specifications.
 
 <p align="center"><img src="Documentation/UILabel_Line_Height_Xcode_Figma.png" width="900"></p>

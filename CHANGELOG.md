@@ -4,7 +4,7 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
-* 0.12.0 - 0.13.0
+* 0.12.0 - 0.14.0
 
 	+ Update `README.md`
 
