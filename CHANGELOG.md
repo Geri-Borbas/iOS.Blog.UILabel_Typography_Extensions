@@ -4,7 +4,7 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
-* 0.16.0
+* 0.16.0 - 0.17.0
 
 	+ Update README.md
 

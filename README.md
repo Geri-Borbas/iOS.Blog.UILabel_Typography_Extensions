@@ -3,11 +3,11 @@ Set `UILabel` line height, letter spacing (and more).
 
 ```Swift
 let headerLabel = UILabel()
-headerLabel.text = "Mars"
-headerLabel.textColor = label
+headerLabel.textColor = UIColor(named: "Mars")
 headerLabel.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 100)
 headerLabel.lineHeight = 80
 headerLabel.letterSpacing = 100 * -0.02
+headerLabel.text = "Mars"
 ```
 
 <p align="center"><img src="Documentation/UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png" width="900"></p>
