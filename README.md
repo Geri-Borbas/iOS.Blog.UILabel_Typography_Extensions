@@ -10,7 +10,7 @@ headerLabel.lineHeight = 80
 headerLabel.letterSpacing = 100 * -0.02
 ```
 
-<p align="center"><img src="Documentation/UlLabel_Line_Height_Letter_Spacing_Extension.png" width="900"></p>
+<p align="center"><img src="Documentation/UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png" width="900"></p>
 
 See the complementary article at [**UILabel line height, letter spacing and more** UILabel typography extensions].
 

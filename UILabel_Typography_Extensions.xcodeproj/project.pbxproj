@@ -18,7 +18,6 @@
 		55722E1E27DB6167002DE7DC /* MarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55722E1D27DB6167002DE7DC /* MarsViewController.swift */; };
 		55722E1F27DB63BC002DE7DC /* PlanetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559E70FC27D90D0E00C00AD7 /* PlanetViewController.swift */; };
 		557D5F8227DE08EB00A7DE15 /* UILabel_Line_Height_Simulator_Figma_Overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 557D5F8027DE08EB00A7DE15 /* UILabel_Line_Height_Simulator_Figma_Overlay.png */; };
-		557D5F8327DE08EB00A7DE15 /* UlLabel_Line_Height_Letter_Spacing_Extension.png in Resources */ = {isa = PBXBuildFile; fileRef = 557D5F8127DE08EB00A7DE15 /* UlLabel_Line_Height_Letter_Spacing_Extension.png */; };
 		557D5F8527DE09BB00A7DE15 /* UILabel_Line_Height_NSAttributedString_BaselineOffset.png in Resources */ = {isa = PBXBuildFile; fileRef = 557D5F8427DE09BB00A7DE15 /* UILabel_Line_Height_NSAttributedString_BaselineOffset.png */; };
 		557D5F8727DE0AAC00A7DE15 /* UILabel_Line_Height_Xcode_Figma.png in Resources */ = {isa = PBXBuildFile; fileRef = 557D5F8627DE0AAC00A7DE15 /* UILabel_Line_Height_Xcode_Figma.png */; };
 		559795E525A259E400A757A3 /* UIColor+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559795E425A259E400A757A3 /* UIColor+Styles.swift */; };
@@ -40,6 +39,7 @@
 		55F7E34825A0AD7F00E7F48B /* AttributesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34725A0AD7F00E7F48B /* AttributesViewController.swift */; };
 		55F7E34B25A0ADFA00E7F48B /* UILabel+Typograpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34A25A0ADFA00E7F48B /* UILabel+Typograpy.swift */; };
 		55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7F0A1259A6F03001BEF90 /* Typography.swift */; };
+		55FE48F027DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png in Resources */ = {isa = PBXBuildFile; fileRef = 55FE48EF27DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,7 +54,6 @@
 		5558DA4527DA1FA900A4A178 /* MockupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockupViewController.swift; sourceTree = "<group>"; };
 		55722E1D27DB6167002DE7DC /* MarsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarsViewController.swift; sourceTree = "<group>"; };
 		557D5F8027DE08EB00A7DE15 /* UILabel_Line_Height_Simulator_Figma_Overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UILabel_Line_Height_Simulator_Figma_Overlay.png; sourceTree = "<group>"; };
-		557D5F8127DE08EB00A7DE15 /* UlLabel_Line_Height_Letter_Spacing_Extension.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UlLabel_Line_Height_Letter_Spacing_Extension.png; sourceTree = "<group>"; };
 		557D5F8427DE09BB00A7DE15 /* UILabel_Line_Height_NSAttributedString_BaselineOffset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UILabel_Line_Height_NSAttributedString_BaselineOffset.png; sourceTree = "<group>"; };
 		557D5F8627DE0AAC00A7DE15 /* UILabel_Line_Height_Xcode_Figma.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UILabel_Line_Height_Xcode_Figma.png; sourceTree = "<group>"; };
 		559795E425A259E400A757A3 /* UIColor+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Styles.swift"; sourceTree = "<group>"; };
@@ -81,6 +80,7 @@
 		55F7E34725A0AD7F00E7F48B /* AttributesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributesViewController.swift; sourceTree = "<group>"; };
 		55F7E34A25A0ADFA00E7F48B /* UILabel+Typograpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Typograpy.swift"; sourceTree = "<group>"; };
 		55F7F0A1259A6F03001BEF90 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		55FE48EF27DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +114,7 @@
 				557D5F8627DE0AAC00A7DE15 /* UILabel_Line_Height_Xcode_Figma.png */,
 				557D5F8427DE09BB00A7DE15 /* UILabel_Line_Height_NSAttributedString_BaselineOffset.png */,
 				557D5F8027DE08EB00A7DE15 /* UILabel_Line_Height_Simulator_Figma_Overlay.png */,
-				557D5F8127DE08EB00A7DE15 /* UlLabel_Line_Height_Letter_Spacing_Extension.png */,
+				55FE48EF27DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png */,
 			);
 			path = Documentation;
 			sourceTree = "<group>";
@@ -260,11 +260,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				557D5F8327DE08EB00A7DE15 /* UlLabel_Line_Height_Letter_Spacing_Extension.png in Resources */,
 				55F236AE25912BC30007BC69 /* LaunchScreen.storyboard in Resources */,
 				554AF31825961B6200A23E41 /* README.md in Resources */,
 				557D5F8727DE0AAC00A7DE15 /* UILabel_Line_Height_Xcode_Figma.png in Resources */,
 				557D5F8527DE09BB00A7DE15 /* UILabel_Line_Height_NSAttributedString_BaselineOffset.png in Resources */,
+				55FE48F027DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png in Resources */,
 				557D5F8227DE08EB00A7DE15 /* UILabel_Line_Height_Simulator_Figma_Overlay.png in Resources */,
 				55F236A825912BC30007BC69 /* Assets.xcassets in Resources */,
 			);
