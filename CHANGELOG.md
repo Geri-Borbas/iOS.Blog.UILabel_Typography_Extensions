@@ -4,6 +4,10 @@
 
 	+ (May) lookup baseline reset issue with overflowing text
 
+* 0.15.0
+
+	+ Added `ImperativeViewController` 
+
 * 0.12.0 - 0.14.0
 
 	+ Update `README.md`
