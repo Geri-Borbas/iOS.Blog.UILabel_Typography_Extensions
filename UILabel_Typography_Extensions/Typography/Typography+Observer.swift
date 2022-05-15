@@ -26,16 +26,15 @@
 
 import UIKit
 
+fileprivate enum  Keys {
+    static var observer: UInt8 = 0
+}
 
-extension UILabel {
+extension TypographyExtensions {
 	
-	typealias TextObserver = Observer<UILabel, String?>
+	typealias TextObserver = Observer<Self, String?>
 	typealias TextChangeAction = (_ oldValue: String?, _ newValue: String?) -> Void
-	
-	fileprivate struct Keys {
-		static var observer: UInt8 = 0
-	}
-	
+
 	fileprivate var observer: TextObserver? {
 		get {
 			objc_getAssociatedObject(self, &Keys.observer) as? TextObserver

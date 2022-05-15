@@ -32,12 +32,12 @@
 		55F236BB25912C430007BC69 /* Withable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236BA25912C430007BC69 /* Withable.swift */; };
 		55F236BF25912C710007BC69 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236BD25912C700007BC69 /* UIKit+Extensions.swift */; };
 		55F236CA25912E690007BC69 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F236C925912E690007BC69 /* PreviewView.swift */; };
-		55F7E33225A03D8300E7F48B /* UILabel+Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E33125A03D8300E7F48B /* UILabel+Observer.swift */; };
-		55F7E33E25A051FE00E7F48B /* UILabel+Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E33825A03FE500E7F48B /* UILabel+Grid.swift */; };
+		55F7E33225A03D8300E7F48B /* Typography+Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E33125A03D8300E7F48B /* Typography+Observer.swift */; };
+		55F7E33E25A051FE00E7F48B /* Typography+Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E33825A03FE500E7F48B /* Typography+Grid.swift */; };
 		55F7E34125A0A91E00E7F48B /* LoremIpsumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34025A0A91E00E7F48B /* LoremIpsumViewController.swift */; };
 		55F7E34425A0AA5E00E7F48B /* GlyphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34325A0AA5E00E7F48B /* GlyphViewController.swift */; };
 		55F7E34825A0AD7F00E7F48B /* AttributesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34725A0AD7F00E7F48B /* AttributesViewController.swift */; };
-		55F7E34B25A0ADFA00E7F48B /* UILabel+Typograpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34A25A0ADFA00E7F48B /* UILabel+Typograpy.swift */; };
+		55F7E34B25A0ADFA00E7F48B /* Views+Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7E34A25A0ADFA00E7F48B /* Views+Typography.swift */; };
 		55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F7F0A1259A6F03001BEF90 /* Typography.swift */; };
 		55FE48F027DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png in Resources */ = {isa = PBXBuildFile; fileRef = 55FE48EF27DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png */; };
 /* End PBXBuildFile section */
@@ -72,13 +72,13 @@
 		55F236BD25912C700007BC69 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		55F236C925912E690007BC69 /* PreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		55F236CE259135680007BC69 /* UILabel+Typography 1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Typography 1.swift"; sourceTree = "<group>"; };
-		55F7E33125A03D8300E7F48B /* UILabel+Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Observer.swift"; sourceTree = "<group>"; };
+		55F7E33125A03D8300E7F48B /* Typography+Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Typography+Observer.swift"; sourceTree = "<group>"; };
 		55F7E33425A03F9600E7F48B /* UILabel+Typography 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Typography 2.swift"; sourceTree = "<group>"; };
-		55F7E33825A03FE500E7F48B /* UILabel+Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Grid.swift"; sourceTree = "<group>"; };
+		55F7E33825A03FE500E7F48B /* Typography+Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Typography+Grid.swift"; sourceTree = "<group>"; };
 		55F7E34025A0A91E00E7F48B /* LoremIpsumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoremIpsumViewController.swift; sourceTree = "<group>"; };
 		55F7E34325A0AA5E00E7F48B /* GlyphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlyphViewController.swift; sourceTree = "<group>"; };
 		55F7E34725A0AD7F00E7F48B /* AttributesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributesViewController.swift; sourceTree = "<group>"; };
-		55F7E34A25A0ADFA00E7F48B /* UILabel+Typograpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Typograpy.swift"; sourceTree = "<group>"; };
+		55F7E34A25A0ADFA00E7F48B /* Views+Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views+Typography.swift"; sourceTree = "<group>"; };
 		55F7F0A1259A6F03001BEF90 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		55FE48EF27DFE62800DCD799 /* UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UlLabel_Line_Height_Letter_Spacing_Extension_UIKit.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,9 +98,9 @@
 			isa = PBXGroup;
 			children = (
 				55F7F0A1259A6F03001BEF90 /* Typography.swift */,
-				55F7E34A25A0ADFA00E7F48B /* UILabel+Typograpy.swift */,
-				55F7E33125A03D8300E7F48B /* UILabel+Observer.swift */,
-				55F7E33825A03FE500E7F48B /* UILabel+Grid.swift */,
+				55F7E33125A03D8300E7F48B /* Typography+Observer.swift */,
+				55F7E33825A03FE500E7F48B /* Typography+Grid.swift */,
+				55F7E34A25A0ADFA00E7F48B /* Views+Typography.swift */,
 				559795E425A259E400A757A3 /* UIColor+Styles.swift */,
 				551B425E259BCE40001310A9 /* UIFont+Extensions.swift */,
 				55A3EECD27D7F24C0002193A /* UIFont+Inspection.swift */,
@@ -277,7 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55F7E34B25A0ADFA00E7F48B /* UILabel+Typograpy.swift in Sources */,
+				55F7E34B25A0ADFA00E7F48B /* Views+Typography.swift in Sources */,
 				55F236A225912BBE0007BC69 /* AppDelegate.swift in Sources */,
 				55F7F0A2259A6F03001BEF90 /* Typography.swift in Sources */,
 				55F236CA25912E690007BC69 /* PreviewView.swift in Sources */,
@@ -285,7 +285,7 @@
 				55722E1F27DB63BC002DE7DC /* PlanetViewController.swift in Sources */,
 				559FB34E25A4B1A200CE795D /* LineHeightViewController.swift in Sources */,
 				5501DB9727D8240E009E0FDA /* UIButton+Styles.swift in Sources */,
-				55F7E33225A03D8300E7F48B /* UILabel+Observer.swift in Sources */,
+				55F7E33225A03D8300E7F48B /* Typography+Observer.swift in Sources */,
 				55F236BB25912C430007BC69 /* Withable.swift in Sources */,
 				55F7E34425A0AA5E00E7F48B /* GlyphViewController.swift in Sources */,
 				55F236BF25912C710007BC69 /* UIKit+Extensions.swift in Sources */,
@@ -301,7 +301,7 @@
 				5558DA4627DA1FA900A4A178 /* MockupViewController.swift in Sources */,
 				55F7E34825A0AD7F00E7F48B /* AttributesViewController.swift in Sources */,
 				55F236B725912BF20007BC69 /* MenuViewController.swift in Sources */,
-				55F7E33E25A051FE00E7F48B /* UILabel+Grid.swift in Sources */,
+				55F7E33E25A051FE00E7F48B /* Typography+Grid.swift in Sources */,
 				5501DB9127D81E70009E0FDA /* EmptyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
