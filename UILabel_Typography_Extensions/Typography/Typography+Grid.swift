@@ -26,14 +26,38 @@
 
 import UIKit
 
+fileprivate enum Keys {
+    static var showGrid: UInt8 = 0
+    fileprivate static let gridLayerName = "Grid"
+    fileprivate static let compositingFilter = "multiplyBlendMode"
+}
+
+extension UITextView {
+    override open func layoutSubviews() {
+        super.layoutSubviews()
+        removeGridLayerIfNeeded()
+        addGridLayerIfNeeded()
+    }
+}
 
 extension UILabel {
-	
-	fileprivate struct Keys {
-		
-		static var showGrid: UInt8 = 0
-	}
-	
+    override open func layoutSubviews() {
+        super.layoutSubviews()
+        removeGridLayerIfNeeded()
+        addGridLayerIfNeeded()
+    }
+}
+
+extension UITextField {
+    override open func layoutSubviews() {
+        super.layoutSubviews()
+        removeGridLayerIfNeeded()
+        addGridLayerIfNeeded()
+    }
+}
+
+extension TypographyExtensions where Self: UIView {
+
 	public var showGrid: Bool {
 		get {
 			(objc_getAssociatedObject(self, &Keys.showGrid) as? NSNumber)?.boolValue ?? false
@@ -43,20 +67,10 @@ extension UILabel {
 		}
 	}
 	
-	fileprivate static let gridLayerName = "Grid"
-	
-	fileprivate static let compositingFilter = "multiplyBlendMode"
-	
 	fileprivate var gridLayer: CALayer? {
-		layer.sublayers?.first(where: { $0.name == Self.gridLayerName })
+		layer.sublayers?.first(where: { $0.name == Keys.gridLayerName })
 	}
-	
-	override open func layoutSubviews() {
-		super.layoutSubviews()
-		removeGridLayerIfNeeded()
-		addGridLayerIfNeeded()
-	}
-	
+
 	fileprivate func addGridLayerIfNeeded() {
 		
 		// Only if needed.
@@ -66,18 +80,18 @@ extension UILabel {
 		
 		// Add.
 		let gridLayer = CALayer()
-		gridLayer.name = Self.gridLayerName
-		gridLayer.compositingFilter = Self.compositingFilter
+		gridLayer.name = Keys.gridLayerName
+		gridLayer.compositingFilter = Keys.compositingFilter
 		layer.addSublayer(gridLayer)
 		
 		// Draw until fits.
 		let baselineOffset = abs(self.baselineOffset)
 		var cursor = CGFloat.zero
 		cursor += baselineOffset
-		while cursor + font.lineHeight - 2 < frame.size.height {
+		while cursor + optionalFont!.lineHeight - 2 < frame.size.height {
 			addGridLayers(to: gridLayer, offset: cursor)
-			cursor += font.lineHeight
-			cursor += font.leading
+			cursor += optionalFont!.lineHeight
+			cursor += optionalFont!.leading
 			cursor += baselineOffset
 			cursor += baselineOffset
 		}
@@ -92,11 +106,11 @@ extension UILabel {
 	fileprivate func addGridLayers(to gridLayer: CALayer, offset: CGFloat) {
 		
 		// Top down.
-		let baseline = font.ascender + offset
-		let descender = baseline - font.descender
-		let xHeight = baseline - font.xHeight
-		let capHeight = baseline - font.capHeight
-		let ascender = baseline - font.ascender
+		let baseline = optionalFont!.ascender + offset
+		let descender = baseline - optionalFont!.descender
+		let xHeight = baseline - optionalFont!.xHeight
+		let capHeight = baseline - optionalFont!.capHeight
+		let ascender = baseline - optionalFont!.ascender
 		
 		let baselineOffset = abs(self.baselineOffset)
 		let top = ascender - baselineOffset
@@ -144,19 +158,19 @@ extension UILabel {
 		layer.strokeColor = stroke?.cgColor
 		layer.lineDashPattern = dash
 		layer.lineCap = .round
-		layer.compositingFilter = Self.compositingFilter
+		layer.compositingFilter = Keys.compositingFilter
 		return layer
 	}
 }
 
 
-fileprivate extension UILabel {
+fileprivate extension TypographyExtensions {
 		
 	var baselineOffset: CGFloat {
 		guard let lineHeight = paragraphStyle?.maximumLineHeight,
 			  lineHeight != 0.0 else {
 			return 0.0
 		}
-		return (lineHeight - font.lineHeight) / 2.0
+		return (lineHeight - optionalFont!.lineHeight) / 2.0
 	}
 }
